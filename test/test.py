@@ -9,25 +9,25 @@ from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
 # I/O bits and constants:
-CLK_SEL     =   1  # assign CLK_SEL = ui_in[0];
-EXT_CLK     =   2  # assign EXT_CLK = ui_in[1];
-EXT_RST     =   4  # assign EXT_RST = ui_in[2];
-D_IN        =   8  # assign D_IN    = ui_in[3];
-                   # ui_in[3] unused
-SHOW_LFSR   =  32  # assign SHOW_LFSR = ui_in[5];
-LFSR_EN     =  64  # assign LFSR_EN   = ui_in[6];
-DIN_SEL     = 128  # assign DIN_SEL   = ui_in[7];
+CLK_SEL     =   1  # assign CLK_SEL   = ui_in[0]; (0 is internal, 1 is EXT_CLK)
+EXT_CLK     =   2  # assign EXT_CLK   = ui_in[1];
+EXT_RST     =   4  # assign EXT_RST   = ui_in[2]; (extra reset, pull-up if you want continuous operation)
+D_IN        =   8  # assign D_IN      = ui_in[3]; (serial data in, from external source)
+MX_DL_SEL   =  16  # assign MX_DL_SEL = ui_in[4]; (0 is standard Latches, 1 is MUX2)
+SHOW_LFSR   =  32  # assign SHOW_LFSR = ui_in[5]; (display the LFSR on uio_out if 1, otherwise show the Johnson counter pulses if 0)
+LFSR_EN     =  64  # assign LFSR_EN   = ui_in[6]; (set to 1 before reset to allow LFSR operation)
+DIN_SEL     = 128  # assign DIN_SEL   = ui_in[7]; (loop back the LFSR to the SISO input when 1, otherwise use external input D_IN), 
 
-D_OUT       =   1  # assign uo_out[0] = D_OUT;
-CLK_OUT     =   2  # assign uo_out[1] = CLK_OUT;
+D_OUT       =   1  # assign uo_out[0] = D_OUT;       # Delayed D_IN
+CLK_OUT     =   2  # assign uo_out[1] = CLK_OUT;     # outputs the selected clock, for external check and 'scope trig
 Johnson0    =   4  # assign uo_out[2] = Johnson[0];
-Johnson1    =   8  # assign uo_out[3] = Johnson[1];
-Johnson2    =  16  # assign uo_out[4] = Johnson[2];
+Johnson1    =   8  # assign uo_out[3] = Johnson[1];  # Johnson counter's internal state.
+Johnson2    =  16  # assign uo_out[4] = Johnson[2];  # Not breathtaking but more debut is better debug.
 Johnson3    =  32  # assign uo_out[5] = Johnson[3];
-LFSR_PERIOD =  64  # assign uo_out[6] = LFSR_PERIOD;
-LFSR_BIT    = 128  # assign uo_out[7] = LFSR_BIT;
+LFSR_PERIOD =  64  # assign uo_out[6] = LFSR_PERIOD; # output for external 'scope trigger, every 255 clock pulses
+LFSR_BIT    = 128  # assign uo_out[7] = LFSR_BIT;    # LFSR output, to compare with D_OUT on a 'scope
 
-# assign uio_out  = PULSES or LFSR;
+# assign uio_out  = PULSES or LFSR depending on SHOW_LFSR;
 
 EnableAsserts = 1
 
