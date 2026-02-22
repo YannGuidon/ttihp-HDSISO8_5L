@@ -61,7 +61,7 @@ module tt_um_ygdes_hdsiso8 (
   //assign uio_out = SHOW_LFSR ? LFSR_state8 : Decoded8 ;
   // but first, boost SHOW_LFSR : slow signal but would make the synth happy
   wire SHOW_LFSR0, SHOW_LFSR1, SHOW_LFSR2, SHOW_LFSR3;
-  (* keep *) sg13g2_inv_4 boost0(.Y(SHOW_LFSR0,  .A(RESET));
+  (* keep *) sg13g2_inv_4 boost0(.Y(SHOW_LFSR0), .A(RESET));
   (* keep *) sg13g2_inv_4 boost1(.Y(SHOW_LFSR1), .A(SHOW_LFSR0));
   (* keep *) sg13g2_inv_4 boost2(.Y(SHOW_LFSR2), .A(SHOW_LFSR0));
   (* keep *) sg13g2_inv_4 boost3(.Y(SHOW_LFSR3), .A(SHOW_LFSR0));
