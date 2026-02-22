@@ -65,14 +65,14 @@ module tt_um_ygdes_hdsiso8 (
   (* keep *) sg13g2_inv_4 boost1(.Y(SHOW_LFSR1), .A(SHOW_LFSR0));
   (* keep *) sg13g2_inv_4 boost2(.Y(SHOW_LFSR2), .A(SHOW_LFSR0));
   (* keep *) sg13g2_inv_4 boost3(.Y(SHOW_LFSR3), .A(SHOW_LFSR0));
-  (* keep *) sg13g2_mux2_2 mx2out(.A0(Decoded8[]), .A1(LFSR_state8[0]), .S(uio_out[0]), .X(SHOW_LFSR1));
-  (* keep *) sg13g2_mux2_2 mx2out(.A0(Decoded8[]), .A1(LFSR_state8[1]), .S(uio_out[1]), .X(SHOW_LFSR1));
-  (* keep *) sg13g2_mux2_2 mx2out(.A0(Decoded8[]), .A1(LFSR_state8[2]), .S(uio_out[2]), .X(SHOW_LFSR1));
-  (* keep *) sg13g2_mux2_2 mx2out(.A0(Decoded8[]), .A1(LFSR_state8[3]), .S(uio_out[3]), .X(SHOW_LFSR2));
-  (* keep *) sg13g2_mux2_2 mx2out(.A0(Decoded8[]), .A1(LFSR_state8[4]), .S(uio_out[4]), .X(SHOW_LFSR2));
-  (* keep *) sg13g2_mux2_2 mx2out(.A0(Decoded8[]), .A1(LFSR_state8[5]), .S(uio_out[5]), .X(SHOW_LFSR2));
-  (* keep *) sg13g2_mux2_2 mx2out(.A0(Decoded8[]), .A1(LFSR_state8[6]), .S(uio_out[6]), .X(SHOW_LFSR3));
-  (* keep *) sg13g2_mux2_2 mx2out(.A0(Decoded8[]), .A1(LFSR_state8[7]), .S(uio_out[7]), .X(SHOW_LFSR3));
+  (* keep *) sg13g2_mux2_2 mx2out0(.A0(Decoded8[0]), .A1(LFSR_state8[0]), .S(uio_out[0]), .X(SHOW_LFSR1));
+  (* keep *) sg13g2_mux2_2 mx2out1(.A0(Decoded8[1]), .A1(LFSR_state8[1]), .S(uio_out[1]), .X(SHOW_LFSR1));
+  (* keep *) sg13g2_mux2_2 mx2out2(.A0(Decoded8[2]), .A1(LFSR_state8[2]), .S(uio_out[2]), .X(SHOW_LFSR1));
+  (* keep *) sg13g2_mux2_2 mx2out3(.A0(Decoded8[3]), .A1(LFSR_state8[3]), .S(uio_out[3]), .X(SHOW_LFSR2));
+  (* keep *) sg13g2_mux2_2 mx2out4(.A0(Decoded8[4]), .A1(LFSR_state8[4]), .S(uio_out[4]), .X(SHOW_LFSR2));
+  (* keep *) sg13g2_mux2_2 mx2out5(.A0(Decoded8[5]), .A1(LFSR_state8[5]), .S(uio_out[5]), .X(SHOW_LFSR2));
+  (* keep *) sg13g2_mux2_2 mx2out6(.A0(Decoded8[6]), .A1(LFSR_state8[6]), .S(uio_out[6]), .X(SHOW_LFSR3));
+  (* keep *) sg13g2_mux2_2 mx2out7(.A0(Decoded8[7]), .A1(LFSR_state8[7]), .S(uio_out[7]), .X(SHOW_LFSR3));
 
 
 ////////////////////////////// home soup //////////////////////////////
