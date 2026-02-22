@@ -65,14 +65,14 @@ module tt_um_ygdes_hdsiso8 (
   (* keep *) sg13g2_inv_4 AmpShow1(.Y(SHOW_LFSR_1), .A(SHOW_LFSR_0));
   (* keep *) sg13g2_inv_4 AmpShow2(.Y(SHOW_LFSR_2), .A(SHOW_LFSR_0));
   (* keep *) sg13g2_inv_4 AmpShow3(.Y(SHOW_LFSR_3), .A(SHOW_LFSR_0));
-  (* keep *) sg13g2_mux2_2 mx2out0(.A0(Decoded8[0]), .A1(LFSR_state8[0]), .S(uio_out[0]), .X(SHOW_LFSR_1));
-  (* keep *) sg13g2_mux2_2 mx2out1(.A0(Decoded8[1]), .A1(LFSR_state8[1]), .S(uio_out[1]), .X(SHOW_LFSR_1));
-  (* keep *) sg13g2_mux2_2 mx2out2(.A0(Decoded8[2]), .A1(LFSR_state8[2]), .S(uio_out[2]), .X(SHOW_LFSR_1));
-  (* keep *) sg13g2_mux2_2 mx2out3(.A0(Decoded8[3]), .A1(LFSR_state8[3]), .S(uio_out[3]), .X(SHOW_LFSR_2));
-  (* keep *) sg13g2_mux2_2 mx2out4(.A0(Decoded8[4]), .A1(LFSR_state8[4]), .S(uio_out[4]), .X(SHOW_LFSR_2));
-  (* keep *) sg13g2_mux2_2 mx2out5(.A0(Decoded8[5]), .A1(LFSR_state8[5]), .S(uio_out[5]), .X(SHOW_LFSR_2));
-  (* keep *) sg13g2_mux2_2 mx2out6(.A0(Decoded8[6]), .A1(LFSR_state8[6]), .S(uio_out[6]), .X(SHOW_LFSR_3));
-  (* keep *) sg13g2_mux2_2 mx2out7(.A0(Decoded8[7]), .A1(LFSR_state8[7]), .S(uio_out[7]), .X(SHOW_LFSR_3));
+  (* keep *) sg13g2_mux2_2 mx2out0(.A0(Decoded8[0]), .A1(LFSR_state8[0]), .X(uio_out[0]), .S(SHOW_LFSR_1));
+  (* keep *) sg13g2_mux2_2 mx2out1(.A0(Decoded8[1]), .A1(LFSR_state8[1]), .X(uio_out[1]), .S(SHOW_LFSR_1));
+  (* keep *) sg13g2_mux2_2 mx2out2(.A0(Decoded8[2]), .A1(LFSR_state8[2]), .X(uio_out[2]), .S(SHOW_LFSR_1));
+  (* keep *) sg13g2_mux2_2 mx2out3(.A0(Decoded8[3]), .A1(LFSR_state8[3]), .X(uio_out[3]), .S(SHOW_LFSR_2));
+  (* keep *) sg13g2_mux2_2 mx2out4(.A0(Decoded8[4]), .A1(LFSR_state8[4]), .X(uio_out[4]), .S(SHOW_LFSR_2));
+  (* keep *) sg13g2_mux2_2 mx2out5(.A0(Decoded8[5]), .A1(LFSR_state8[5]), .X(uio_out[5]), .S(SHOW_LFSR_2));
+  (* keep *) sg13g2_mux2_2 mx2out6(.A0(Decoded8[6]), .A1(LFSR_state8[6]), .X(uio_out[6]), .S(SHOW_LFSR_3));
+  (* keep *) sg13g2_mux2_2 mx2out7(.A0(Decoded8[7]), .A1(LFSR_state8[7]), .X(uio_out[7]), .S(SHOW_LFSR_3));
 
 
 ////////////////////////////// home soup //////////////////////////////
