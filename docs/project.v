@@ -25,20 +25,23 @@ module tt_um_ygdes_hdsiso8 (
 
 
   // General/housekeeping signals
-  wire CLK_SEL, EXT_CLK, EXT_RST, D_IN;
-  assign CLK_SEL = ui_in[0];
-  assign EXT_CLK = ui_in[1];
-  assign EXT_RST = ui_in[2];
-  assign D_IN    = ui_in[3];
+  wire CLK_SEL, EXT_CLK, EXT_RST, D_IN, MX_DL_SEL;
+  assign CLK_SEL   = ui_in[0];
+  assign EXT_CLK   = ui_in[1];
+  assign EXT_RST   = ui_in[2];
+  assign D_IN      = ui_in[3];
+  assign MX_DL_SEL = ui_in[4];
 
   wire CLK_OUT;
   assign uo_out[1] = CLK_OUT;
 
 
   // SISO
+  wire DL_out, MX_out;
+  // assign uo_out[0] = D_OUT;
+  (* keep *) sg13g2_mux2_2 mux2_Din(.A0(DL_out), .A1(MX_out), .S(MX_DL_SEL), .X(uo_out[0]));
+
   wire [3:0] Johnson4;
-  wire D_OUT;
-  assign uo_out[0] = D_OUT;
   assign uo_out[2] = Johnson4[0];
   assign uo_out[3] = Johnson4[1];
   assign uo_out[4] = Johnson4[2];
@@ -61,9 +64,9 @@ module tt_um_ygdes_hdsiso8 (
   assign uio_out = SHOW_LFSR ? LFSR_state8 : Decoded8 ;
 
 
-////////////////////////////// home soup //////////////////////////////
+////////////////////////////// custom soup //////////////////////////////
 
-  wire INT_RESET, SISO_in;
+  wire INT_RESET, ;
 
   // CLK_OUT = clk if CLK_SEL=0, else EXT_CLK
   // assign CLK_OUT = CLK_SEL ? EXT_CLK : clk;
@@ -101,14 +104,7 @@ module tt_um_ygdes_hdsiso8 (
   // List all unused inputs to prevent warnings
   wire _unused = &{
     ena,       // They said not to bother, then ... why provide it ?
-    ui_in[4],  // One pin left.
     uio_in,
-    SISO_in,
     1'b0};
-
-  // dummy constants until I write the corresponding code
-
-  // SISO
-  assign D_OUT = 1'b0;
 
 endmodule
