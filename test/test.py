@@ -29,7 +29,7 @@ LFSR_BIT    = 128  # assign uo_out[7] = LFSR_BIT;
 
 # assign uio_out  = PULSES or LFSR;
 
-EnableAsserts = 0
+EnableAsserts = 1
 
 @cocotb.test()
 async def test_project(dut):
