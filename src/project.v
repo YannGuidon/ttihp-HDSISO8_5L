@@ -60,19 +60,19 @@ module tt_um_ygdes_hdsiso8 (
   wire [7:0] LFSR_state8, Decoded8;  // The two sources
   //assign uio_out = SHOW_LFSR ? LFSR_state8 : Decoded8 ;
   // but first, boost SHOW_LFSR : slow signal but would make the synth happy
-  wire SHOW_LFSR0, SHOW_LFSR1, SHOW_LFSR2, SHOW_LFSR3;
-  (* keep *) sg13g2_inv_4 boost0(.Y(SHOW_LFSR0), .A(SHOW_LFSR));
-  (* keep *) sg13g2_inv_4 boost1(.Y(SHOW_LFSR1), .A(SHOW_LFSR0));
-  (* keep *) sg13g2_inv_4 boost2(.Y(SHOW_LFSR2), .A(SHOW_LFSR0));
-  (* keep *) sg13g2_inv_4 boost3(.Y(SHOW_LFSR3), .A(SHOW_LFSR0));
-  (* keep *) sg13g2_mux2_2 mx2out0(.A0(Decoded8[0]), .A1(LFSR_state8[0]), .S(uio_out[0]), .X(SHOW_LFSR1));
-  (* keep *) sg13g2_mux2_2 mx2out1(.A0(Decoded8[1]), .A1(LFSR_state8[1]), .S(uio_out[1]), .X(SHOW_LFSR1));
-  (* keep *) sg13g2_mux2_2 mx2out2(.A0(Decoded8[2]), .A1(LFSR_state8[2]), .S(uio_out[2]), .X(SHOW_LFSR1));
-  (* keep *) sg13g2_mux2_2 mx2out3(.A0(Decoded8[3]), .A1(LFSR_state8[3]), .S(uio_out[3]), .X(SHOW_LFSR2));
-  (* keep *) sg13g2_mux2_2 mx2out4(.A0(Decoded8[4]), .A1(LFSR_state8[4]), .S(uio_out[4]), .X(SHOW_LFSR2));
-  (* keep *) sg13g2_mux2_2 mx2out5(.A0(Decoded8[5]), .A1(LFSR_state8[5]), .S(uio_out[5]), .X(SHOW_LFSR2));
-  (* keep *) sg13g2_mux2_2 mx2out6(.A0(Decoded8[6]), .A1(LFSR_state8[6]), .S(uio_out[6]), .X(SHOW_LFSR3));
-  (* keep *) sg13g2_mux2_2 mx2out7(.A0(Decoded8[7]), .A1(LFSR_state8[7]), .S(uio_out[7]), .X(SHOW_LFSR3));
+  wire SHOW_LFSR_0, SHOW_LFSR_1, SHOW_LFSR_2, SHOW_LFSR_3;
+  (* keep *) sg13g2_inv_4 AmpShow0(.Y(SHOW_LFSR_0), .A(SHOW_LFSR ));
+  (* keep *) sg13g2_inv_4 AmpShow1(.Y(SHOW_LFSR_1), .A(SHOW_LFSR_0));
+  (* keep *) sg13g2_inv_4 AmpShow2(.Y(SHOW_LFSR_2), .A(SHOW_LFSR_0));
+  (* keep *) sg13g2_inv_4 AmpShow3(.Y(SHOW_LFSR_3), .A(SHOW_LFSR_0));
+  (* keep *) sg13g2_mux2_2 mx2out0(.A0(Decoded8[0]), .A1(LFSR_state8[0]), .S(uio_out[0]), .X(SHOW_LFSR_1));
+  (* keep *) sg13g2_mux2_2 mx2out1(.A0(Decoded8[1]), .A1(LFSR_state8[1]), .S(uio_out[1]), .X(SHOW_LFSR_1));
+  (* keep *) sg13g2_mux2_2 mx2out2(.A0(Decoded8[2]), .A1(LFSR_state8[2]), .S(uio_out[2]), .X(SHOW_LFSR_1));
+  (* keep *) sg13g2_mux2_2 mx2out3(.A0(Decoded8[3]), .A1(LFSR_state8[3]), .S(uio_out[3]), .X(SHOW_LFSR_2));
+  (* keep *) sg13g2_mux2_2 mx2out4(.A0(Decoded8[4]), .A1(LFSR_state8[4]), .S(uio_out[4]), .X(SHOW_LFSR_2));
+  (* keep *) sg13g2_mux2_2 mx2out5(.A0(Decoded8[5]), .A1(LFSR_state8[5]), .S(uio_out[5]), .X(SHOW_LFSR_2));
+  (* keep *) sg13g2_mux2_2 mx2out6(.A0(Decoded8[6]), .A1(LFSR_state8[6]), .S(uio_out[6]), .X(SHOW_LFSR_3));
+  (* keep *) sg13g2_mux2_2 mx2out7(.A0(Decoded8[7]), .A1(LFSR_state8[7]), .S(uio_out[7]), .X(SHOW_LFSR_3));
 
 
 ////////////////////////////// home soup //////////////////////////////
