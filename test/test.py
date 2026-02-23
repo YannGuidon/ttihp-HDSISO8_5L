@@ -114,6 +114,8 @@ async def test_project(dut):
       if i >= 8:
         break
 
+    await ClockCycles(dut.clk, 5000) # let it run for a while to see the LFSR output from the SIO
+
     dut._log.info(" Johnson8 OK !")
 
 # junkyard...
