@@ -45,9 +45,8 @@ async def test_project(dut):
     dut.ena.value = 1     # no change either
     dut.rst_n.value = 0   # circuit stopped
 
-    dut.ui_in.value = LFSR_EN + SHOW_LFSR # early selection
+    dut.ui_in.value = LFSR_EN + SHOW_LFSR + DIN_SEL # early selection
     # CLK_SEL=0, internal clock selected.
-    # DIN_SEL not used yet.
     await ClockCycles(dut.clk, 2)
   
     dut.rst_n.value = 1            # wake up (from inside)
@@ -57,7 +56,7 @@ async def test_project(dut):
     # The real wake-up
 
     await ClockCycles(dut.clk, 1)
-    dut.ui_in.value = EXT_RST + LFSR_EN + SHOW_LFSR  # RESET released, it should take one clock to take effect
+    dut.ui_in.value = EXT_RST + LFSR_EN + SHOW_LFSR + DIN_SEL  # RESET released, it should take one clock to take effect
     await ClockCycles(dut.clk, 1)
     if EnableAsserts:
       assert dut.uio_out.value == 6 # init pattern
@@ -90,19 +89,19 @@ async def test_project(dut):
           assert i == 255
         break
 
-    dut.ui_in.value = EXT_RST + SHOW_LFSR  # LFSR_EN off, stall the register feedback
+    dut.ui_in.value = EXT_RST + SHOW_LFSR + DIN_SEL  # LFSR_EN off, stall the register feedback
     await ClockCycles(dut.clk, 10)
     if EnableAsserts:
       assert dut.uio_out.value == 4 # not 0 since one bit is inverted
   
     dut._log.info(" LFSR OK !")
 
-    dut.ui_in.value = 0   # EXT_RST asserted, SHOW_LFSR off : restart everything
+    dut.ui_in.value = DIN_SEL   # EXT_RST asserted, SHOW_LFSR off : restart everything
     await ClockCycles(dut.clk, 3)
     if EnableAsserts:
       assert dut.uio_out.value == 0 # the pulses must be off during RESET
 
-    dut.ui_in.value = EXT_RST  # restart
+    dut.ui_in.value = EXT_RST + DIN_SEL  # restart
     await ClockCycles(dut.clk, 1) # 2 cycles before the counter is visible (including the next wait of 1 cycle)
 
     i = 0
