@@ -25,20 +25,23 @@ module tt_um_ygdes_hdsiso8 (
 
 
   // General/housekeeping signals
-  wire CLK_SEL, EXT_CLK, EXT_RST, D_IN;
-  assign CLK_SEL = ui_in[0];
-  assign EXT_CLK = ui_in[1];
-  assign EXT_RST = ui_in[2];
-  assign D_IN    = ui_in[3];
+  wire CLK_SEL, EXT_CLK, EXT_RST, D_IN, MX_DL_SEL;
+  assign CLK_SEL   = ui_in[0];
+  assign EXT_CLK   = ui_in[1];
+  assign EXT_RST   = ui_in[2];
+  assign D_IN      = ui_in[3];
+  assign MX_DL_SEL = ui_in[4];
 
   wire CLK_OUT;
   assign uo_out[1] = CLK_OUT;
 
 
   // SISO
+  wire DL_out, MX_out;
+  // assign uo_out[0] = D_OUT;
+  (* keep *) sg13g2_mux2_2 mux2_Din(.A0(DL_out), .A1(MX_out), .S(MX_DL_SEL), .X(uo_out[0]));
+
   wire [3:0] Johnson4;
-  wire D_OUT;
-  assign uo_out[0] = D_OUT;
   assign uo_out[2] = Johnson4[0];
   assign uo_out[3] = Johnson4[1];
   assign uo_out[4] = Johnson4[2];
@@ -56,28 +59,14 @@ module tt_um_ygdes_hdsiso8 (
   assign uo_out[7] = LFSR_BIT;
 
 
-  // multiplexed output on uio_out
-  wire [7:0] LFSR_state8, Decoded8;  // The two sources
-  //assign uio_out = SHOW_LFSR ? LFSR_state8 : Decoded8 ;
-  // but first, boost SHOW_LFSR : slow signal but would make the synth happy
-  wire SHOW_LFSR_0, SHOW_LFSR_1, SHOW_LFSR_2, SHOW_LFSR_3;
-  (* keep *) sg13g2_inv_4 AmpShow0(.Y(SHOW_LFSR_0), .A(SHOW_LFSR ));
-  (* keep *) sg13g2_inv_4 AmpShow1(.Y(SHOW_LFSR_1), .A(SHOW_LFSR_0));
-  (* keep *) sg13g2_inv_4 AmpShow2(.Y(SHOW_LFSR_2), .A(SHOW_LFSR_0));
-  (* keep *) sg13g2_inv_4 AmpShow3(.Y(SHOW_LFSR_3), .A(SHOW_LFSR_0));
-  (* keep *) sg13g2_mux2_2 mx2out0(.A0(Decoded8[0]), .A1(LFSR_state8[0]), .X(uio_out[0]), .S(SHOW_LFSR_1));
-  (* keep *) sg13g2_mux2_2 mx2out1(.A0(Decoded8[1]), .A1(LFSR_state8[1]), .X(uio_out[1]), .S(SHOW_LFSR_1));
-  (* keep *) sg13g2_mux2_2 mx2out2(.A0(Decoded8[2]), .A1(LFSR_state8[2]), .X(uio_out[2]), .S(SHOW_LFSR_1));
-  (* keep *) sg13g2_mux2_2 mx2out3(.A0(Decoded8[3]), .A1(LFSR_state8[3]), .X(uio_out[3]), .S(SHOW_LFSR_2));
-  (* keep *) sg13g2_mux2_2 mx2out4(.A0(Decoded8[4]), .A1(LFSR_state8[4]), .X(uio_out[4]), .S(SHOW_LFSR_2));
-  (* keep *) sg13g2_mux2_2 mx2out5(.A0(Decoded8[5]), .A1(LFSR_state8[5]), .X(uio_out[5]), .S(SHOW_LFSR_2));
-  (* keep *) sg13g2_mux2_2 mx2out6(.A0(Decoded8[6]), .A1(LFSR_state8[6]), .X(uio_out[6]), .S(SHOW_LFSR_3));
-  (* keep *) sg13g2_mux2_2 mx2out7(.A0(Decoded8[7]), .A1(LFSR_state8[7]), .X(uio_out[7]), .S(SHOW_LFSR_3));
+  // multiplexed output
+  wire [7:0] LFSR_state8, Decoded8;
+  assign uio_out = SHOW_LFSR ? LFSR_state8 : Decoded8 ;
 
 
-////////////////////////////// home soup //////////////////////////////
+////////////////////////////// custom soup //////////////////////////////
 
-  wire INT_RESET, SISO_in;
+  wire INT_RESET, ;
 
   // CLK_OUT = clk if CLK_SEL=0, else EXT_CLK
   // assign CLK_OUT = CLK_SEL ? EXT_CLK : clk;
@@ -115,14 +104,7 @@ module tt_um_ygdes_hdsiso8 (
   // List all unused inputs to prevent warnings
   wire _unused = &{
     ena,       // They said not to bother, then ... why provide it ?
-    ui_in[4],  // One pin left.
     uio_in,
-    SISO_in,
     1'b0};
-
-  // dummy constants until I write the corresponding code
-
-  // SISO
-  assign D_OUT = 1'b0;
 
 endmodule
