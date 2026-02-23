@@ -5,32 +5,36 @@
  *   https://github.com/ygdes/ttihp-HDSISO8/tree/main/docs
  *
  * This is one of the 3 versions :
- *  - siso_slice4_dl_neg (this one) is the ol'good version using standard latches. Reliable but bulky.
- *  - siso_slice4_mx_neg does the same but smaller and less constrained timing.
- *  - siso_slice4_mx_pos is siso_slice4_dl_neg but with internally inverted control signal, for bubble pushing.
+ *  - siso_slice4_dl_neg (this one) is the ol'good version
+ *      using standard latches. Reliable but bulky.
+ *  - siso_slice4_mx_neg does the same but smaller and
+ *      with less constrained timing.
+ *  - siso_slice4_mx_pos is siso_slice4_dl_neg but with internally
+ *       inverted control signal, for bubble pushing.
  *
- * 4 versions of each are provided:
- *  - siso_slice4_dl_neg         stores 4 bits, 1 inv.
- *  - siso_tranche4x4_dl_neg     stores 16 bits (12 effective)
+ * 4 versions are provided:
+ *  - siso_slice4_dl_neg         stores 4 bits in parallel, driver by one inv_4.
+ *  - siso_tranche4x4_dl_neg     stores 16 bits (12 effective).
  *  - siso_tranche4x4x4_dl_pos   stores 64 bits, control pulse polarity is back to positive.
  *  - siso_tranche4x4x4x4_dl_pos stores 256 bits, polarity preserved by double inversion.
  *
  * To shift the 4 data bits from siso_in to siso_out, provide 4 sequential,
- * non-overlapping positive pulses on latch[], starting from bit 0 to bit 3.
- * It takes 4 pulses for a new data to appear at the output.
+ * non-overlapping positive pulses on latch[3:0], starting from bit 0 to bit 3.
+ * It takes 4 pulses for a new data nibble to appear at the output.
  */
 
-/////////////////////////////////////////////////////////////////////////////////
+.................................................................................
 
 `ifdef  ygdef_Inverters_x4
 `else
 `define ygdef_Inverters_x4
 
 // Just a 4-bit interter-buffer to keep the code size down.
-// 4 × 10.9 = 43.6
+// area : 4 × 10.9 = 43.6
 module Inverters_x4 (
     input  wire [3:0] A,
     output wire [3:0] Y);
+
   (* keep *) sg13g2_inv_4  Amp0(.Y(Y[0]), .A(A[0]));
   (* keep *) sg13g2_inv_4  Amp1(.Y(Y[1]), .A(A[1]));
   (* keep *) sg13g2_inv_4  Amp2(.Y(Y[2]), .A(A[2]));
@@ -39,9 +43,7 @@ endmodule;
 
 `endif
 
-/////////////////////////////////////////////////////////////////////////////////
-//                             Version DLHQ
-/////////////////////////////////////////////////////////////////////////////////
+.................................................................................
 
 // sg13g2_dlhq_1 area = 30.8
 // sg13g2_inv_4  area = 10.9
@@ -49,17 +51,15 @@ endmodule;
 module siso_slice4_dl_neg (      // Pulse low to latch
     input  wire [3:0] siso_in,   // 4 staggered data inputs
     output wire [3:0] siso_out,  // 4 staggered data outputs
-    input  wire       latch,     // pass/keep signal
+    input  wire       latch      // pass/keep signal
 );
 
   wire local;
-  (* keep *) sg13g2_inv_4  Amp(.Y(local), .A(latch));
+  (* keep *) sg13g2_inv_4 Amp(.Y(local), .A(latch));
   (* keep *) sg13g2_dlhq_1 l0(.Q(siso_out[0]), .D(siso_in[0]), .GATE(local));
   (* keep *) sg13g2_dlhq_1 l1(.Q(siso_out[1]), .D(siso_in[1]), .GATE(local));
   (* keep *) sg13g2_dlhq_1 l2(.Q(siso_out[2]), .D(siso_in[2]), .GATE(local));
   (* keep *) sg13g2_dlhq_1 l3(.Q(siso_out[3]), .D(siso_in[3]), .GATE(local));
-
-  // and that's all.
 endmodule;
 
 .................................................................................
@@ -69,7 +69,7 @@ endmodule;
 module siso_tranche4x4_dl_neg (  // Pulse low to latch
     input  wire [3:0] siso_in,   // 4 staggered data inputs
     output wire [3:0] siso_out,  // 4 staggered data outputs
-    input  wire [3:0] latch,     // pass/keep signals
+    input  wire [3:0] latch      // pass/keep signals
 );
 
   wire [3:0] t1, t2, t3;
@@ -77,18 +77,16 @@ module siso_tranche4x4_dl_neg (  // Pulse low to latch
   siso_slice4_dl_neg slice1(.siso_in(t1),      .siso_out(t2),       .latch(latch[2])); // p in reverse order
   siso_slice4_dl_neg slice2(.siso_in(t2),      .siso_out(t3),       .latch(latch[1]));
   siso_slice4_dl_neg slice3(.siso_in(t3),      .siso_out(siso_out), .latch(latch[0]));
-
-  // et voilà.
 endmodule;
 
 .................................................................................
 
 // area: 4×(536.4 + 10.9) = 2189.2
 // 64 latches hold 48 bits
-module siso_tranche4x4x4_dl_pos (  // Pulse high to latch
-    input  wire [3:0] siso_in,   // 4 staggered data inputs
-    output wire [3:0] siso_out,  // 4 staggered data outputs
-    input  wire [3:0] latch,     // pass/keep signals
+module siso_tranche4x4x4_dl_pos ( // Pulse high to latch
+    input  wire [3:0] siso_in,    // 4 staggered data inputs
+    output wire [3:0] siso_out,   // 4 staggered data outputs
+    input  wire [3:0] latch       // pass/keep signals
 );
 
   wire [3:0] t1, t2, t3, p;
@@ -106,12 +104,12 @@ endmodule;
 module siso_tranche4x4x4x4_dl_pos ( // Pulse high to latch
     input  wire [3:0] siso_in,      // 4 staggered data inputs
     output wire [3:0] siso_out,     // 4 staggered data outputs
-    input  wire [3:0] latch,        // pass/keep signals
+    input  wire [3:0] latch         // pass/keep signals
 );
 
   wire [3:0] t1, t2, t3, q, p0, p1, p2, p3;
   // Double inversion, but last stage is per-tranche for better distance/reach
-  Inverters_x4  Amp0(.Y(q), .A(latch);
+  Inverters_x4  Amp0(.Y(q ), .A(latch);
   Inverters_x4  Amp0(.Y(p0), .A(q));
   Inverters_x4  Amp1(.Y(p1), .A(q));
   Inverters_x4  Amp2(.Y(p2), .A(q));
