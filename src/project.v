@@ -66,7 +66,7 @@ module tt_um_ygdes_hdsiso8 (
 
 ////////////////////////////// custom soup //////////////////////////////
 
-  wire INT_RESET, ;
+  wire INT_RESET;
 
   // CLK_OUT = clk if CLK_SEL=0, else EXT_CLK
   // assign CLK_OUT = CLK_SEL ? EXT_CLK : clk;
@@ -78,10 +78,12 @@ module tt_um_ygdes_hdsiso8 (
 
   // Select + resynch D_in
   //      SISO_in <= DIN_SEL ? LFSR_BIT : D_IN;
-  wire mux_Din;
-  (* keep *) sg13g2_mux2_2 mux2_Din(.A0(D_IN), .A1(LFSR_BIT), .S(DIN_SEL), .X(mux_Din));
-  (* keep *) sg13g2_dfrbpq_2 DFF_Din(.Q(SISO_in), .D(mux_Din), .RESET_B(INT_RESET), .CLK(CLK_OUT));
-
+  // wire mux_Din;
+  // (* keep *) sg13g2_mux2_2 mux2_Din(.A0(D_IN), .A1(LFSR_BIT), .S(DIN_SEL), .X(mux_Din));
+  // (* keep *) sg13g2_dfrbpq_2 DFF_Din(.Q(SISO_in), .D(mux_Din), .RESET_B(INT_RESET), .CLK(CLK_OUT));
+  // merged into 1
+    (* keep *) sg13g2_sdfrbpq_1 sync_Din(.Q(SISO_in), .D(D_IN),
+       .SCD(LFSR_BIT), .SCE(DIN_SEL), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
 ////////////////////////////// sub-modules //////////////////////////////
 
@@ -103,29 +105,29 @@ module tt_um_ygdes_hdsiso8 (
 // JUST A TEST FOR NOW  !!!!
 
   // looping the SISO on itself to get 8× downsampling but no demux yet
-
   // First, sample the data at the right moment
   wire feedback;
   (* keep *) sg13g2_sdfrbpq_1 sync8(.Q(feedback), .D(SISO_in),
        .SCD(feedback), .SCE(Decoded8[4]), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
-  wire [3:0] siso_in4, siso_out4;    // l'originalité des noms de variables......
+    wire [3:0] siso_in4, siso_out4, latch4;    // l'originalité des noms de variables......
   assign siso_in4[0] = feedback;
   assign siso_in4[1] = siso_out4[0];
-  assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe.
-  assign siso_in4[3] = siso_out4[2];
+  assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe,
+  assign siso_in4[3] = siso_out4[2];  // mate le formatage
   assign DL_out      = siso_out4[3];
   assign MX_out      = siso_out4[1];  // juste pour driver le signal, on verra après
+  assign latch4 = {
+    Decoded8[0], // Data is latched during the transition from [0] to [1]
+    Decoded8[2],
+    Decoded8[4],
+    Decoded8[6]
+  };
 
   siso_tranche4x4x4_dl_pos siso64(
     .siso_in( siso_in4 ),
     .siso_out(siso_out4),
-    .latch( {
-        Decoded8[0], // Data is latched during the transition from [0] to [1]
-        Decoded8[2],
-        Decoded8[4],
-        Decoded8[6]
-      });
+    .latch(latch4});
 
 
 ////////////////////////////// All the dummies go here //////////////////////////////
