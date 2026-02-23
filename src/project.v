@@ -110,7 +110,7 @@ module tt_um_ygdes_hdsiso8 (
     (* keep *) sg13g2_sdfrbpq_1 sync8(.Q(back), .D(back),
        .SCD(SISO_in), .SCE(Decoded8[5]), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
-    wire [3:0] siso_in4, siso_out4, latch4;    // l'originalité des noms de variables......
+    wire [3:0] siso_in4, siso_out4, latch4, chain4;    // l'originalité des noms de variables......
   assign siso_in4[0] = back;
   assign siso_in4[1] = siso_out4[0];
   assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe,
@@ -123,9 +123,14 @@ module tt_um_ygdes_hdsiso8 (
     Decoded8[4],
     Decoded8[6]
   };
+// 512 latches !
+  siso_tranche4x4x4x4_dl_pos siso256_1(
+    .siso_in( siso_in4),
+    .siso_out(chain4),
+    .latch(latch4));
 
-  siso_tranche4x4x4x4_dl_pos siso64(
-    .siso_in( siso_in4 ),
+  siso_tranche4x4x4x4_dl_pos siso256_2(
+    .siso_in(chain4),
     .siso_out(siso_out4),
     .latch(latch4));
 
