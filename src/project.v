@@ -33,7 +33,7 @@ module tt_um_ygdes_hdsiso8 (
   assign MX_DL_SEL = ui_in[4];
 
   wire CLK_OUT;
-  assign uo_out[1] = CLK_OUT;
+  assign uo_out[1] = ~CLK_OUT;  // ring oscillator anyone ?
 
 
   // SISO
@@ -123,13 +123,13 @@ module tt_um_ygdes_hdsiso8 (
     Decoded8[4],
     Decoded8[6]
   };
-// 512 latches !
-  siso_tranche4x4x4x4_dl_pos siso256_1(
+// 128 transparent latches
+  siso_tranche4x4x4_dl_pos siso256_1(
     .siso_in( siso_in4),
     .siso_out(chain4),
     .latch(latch4));
 
-  siso_tranche4x4x4x4_dl_pos siso256_2(
+  siso_tranche4x4x4_dl_pos siso256_2(
     .siso_in(chain4),
     .siso_out(siso_out4),
     .latch(latch4));
