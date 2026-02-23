@@ -11,3 +11,5 @@ The scalability comes from modularity: one IO block controls as many tranches as
 An extra LFSR is provided for extra testability, it can be used alone for something else but it allows frequency characterisation by using just a bench 'scope and a variable-frequency clock generator.
 
 More info: see the /doc and reach me at https://hackaday.io/whygee
+
+Scheduled of iHP 26a
