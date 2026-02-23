@@ -36,6 +36,7 @@ As usual, it all comes "as is" with no guarantee whatsoever. I come in good fait
 Extra insight and observability:
 * When SHOW_LFSR=0, the IO port shows the 8 internal staggered pulses, turning from 0 to 1 and back to 0 in a linear sequence. It's just like a 4017 but 8 bits, since it's a Johnson counter too.
 * 4 output pins provide the internal state of that 4-bit Johnson counter, or ring counter, thus you should observe a pretty pattern where only one pin changes at each clock cycle.
+* You can estimate the routing latency of the pins/pads/internal wires. CLK_OUT is inverted so just tie it to EXT_CLK with pin CLK_SEL=1. Probe with an oscillocsope and voilà, you have a free-running oscillator and you can directly measure the low and high times, each corresponding to one trip on the in or out wire.
 
 ![](Johnson8.png)
 
