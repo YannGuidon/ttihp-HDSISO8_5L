@@ -106,12 +106,12 @@ module tt_um_ygdes_hdsiso8 (
 
   // looping the SISO on itself to get 8× downsampling but no demux yet
   // First, sample the data at the right moment
-  wire feedback;
-  (* keep *) sg13g2_sdfrbpq_1 sync8(.Q(feedback), .D(SISO_in),
-       .SCD(feedback), .SCE(Decoded8[4]), .RESET_B(INT_RESET), .CLK(CLK_OUT));
+  wire back;
+    (* keep *) sg13g2_sdfrbpq_1 sync8(.Q(back), .D(back),
+       .SCD(SISO_in), .SCE(Decoded8[5]), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
     wire [3:0] siso_in4, siso_out4, latch4;    // l'originalité des noms de variables......
-  assign siso_in4[0] = feedback;
+  assign siso_in4[0] = back;
   assign siso_in4[1] = siso_out4[0];
   assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe,
   assign siso_in4[3] = siso_out4[2];  // mate le formatage
@@ -127,7 +127,7 @@ module tt_um_ygdes_hdsiso8 (
   siso_tranche4x4x4_dl_pos siso64(
     .siso_in( siso_in4 ),
     .siso_out(siso_out4),
-    .latch(latch4});
+    .latch(latch4));
 
 
 ////////////////////////////// All the dummies go here //////////////////////////////
