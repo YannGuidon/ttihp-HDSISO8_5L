@@ -113,7 +113,7 @@ module siso_tranche4x4x4x4_mx_pos ( // Pulse high to latch
 
   wire [3:0] t1, t2, t3, q, p0, p1, p2, p3;
   // Double inversion, but last stage is per-tranche for better distance/reach
-  Inverters_x4  Amp0(.Y(q ), .A(latch);
+  Inverters_x4  Amp0(.Y(q ), .A(latch));
   Inverters_x4  Amp1(.Y(p0), .A(q));
   Inverters_x4  Amp2(.Y(p1), .A(q));
   Inverters_x4  Amp3(.Y(p2), .A(q));
