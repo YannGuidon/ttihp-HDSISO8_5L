@@ -124,7 +124,7 @@ module tt_um_ygdes_hdsiso8 (
     Decoded8[6]
   };
 
-  siso_tranche4x4x4_dl_pos siso64(
+  siso_tranche4x4x4x4_dl_pos siso64(
     .siso_in( siso_in4 ),
     .siso_out(siso_out4),
     .latch(latch4));
