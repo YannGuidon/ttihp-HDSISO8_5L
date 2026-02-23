@@ -119,10 +119,10 @@ module siso_tranche4x4x4x4_mx_pos ( // Pulse high to latch
   Inverters_x4  Amp3(.Y(p2), .A(q));
   Inverters_x4  Amp4(.Y(p3), .A(q));
 
-  siso_tranche4x4x4_mx_neg tranche0(.siso_in(siso_in), .siso_out(t1),       .latch(p0));
-  siso_tranche4x4x4_mx_neg tranche1(.siso_in(t1),      .siso_out(t2),       .latch(p1));
-  siso_tranche4x4x4_mx_neg tranche2(.siso_in(t2),      .siso_out(t3),       .latch(p2));
-  siso_tranche4x4x4_mx_neg tranche3(.siso_in(t3),      .siso_out(siso_out), .latch(p3));
+  siso_tranche4x4x4_mx_pos tranche0(.siso_in(siso_in), .siso_out(t1),       .latch(p0));
+  siso_tranche4x4x4_mx_pos tranche1(.siso_in(t1),      .siso_out(t2),       .latch(p1));
+  siso_tranche4x4x4_mx_pos tranche2(.siso_in(t2),      .siso_out(t3),       .latch(p2));
+  siso_tranche4x4x4_mx_pos tranche3(.siso_in(t3),      .siso_out(siso_out), .latch(p3));
 endmodule
 
 
