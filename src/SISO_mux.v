@@ -40,7 +40,7 @@ module Inverters_x4 (
   (* keep *) sg13g2_inv_4  Amp1(.Y(Y[1]), .A(A[1]));
   (* keep *) sg13g2_inv_4  Amp2(.Y(Y[2]), .A(A[2]));
   (* keep *) sg13g2_inv_4  Amp3(.Y(Y[3]), .A(A[3]));
-endmodule;
+endmodule
 
 `endif
 
@@ -64,7 +64,7 @@ module siso_slice4_mx_neg (      // Pulse low to latch
   (* keep *) sg13g2_mux2_2 mx3(.A0(siso_in[3]), .A1(fb[3]), .X(fb[3]), .S(latch_n));
 
   assign siso_out = fb;
-endmodule;
+endmodule
 
 //.................................................................................
 
@@ -81,7 +81,7 @@ module siso_tranche4x4_mx_neg (  // Pulse low to latch
   siso_slice4_mx_neg slice1(.siso_in(t1),      .siso_out(t2),       .latch(latch[2])); // p in reverse order
   siso_slice4_mx_neg slice2(.siso_in(t2),      .siso_out(t3),       .latch(latch[1]));
   siso_slice4_mx_neg slice3(.siso_in(t3),      .siso_out(siso_out), .latch(latch[0]));
-endmodule;
+endmodule
 
 //.................................................................................
 
@@ -99,7 +99,7 @@ module siso_tranche4x4x4_mx_pos ( // Pulse high to latch
   siso_tranche4x4_mx_neg tranche1(.siso_in(t1),      .siso_out(t2),	  .latch(p));
   siso_tranche4x4_mx_neg tranche2(.siso_in(t2),      .siso_out(t3),	  .latch(p));
   siso_tranche4x4_mx_neg tranche3(.siso_in(t3),      .siso_out(siso_out), .latch(p));
-endmodule;
+endmodule
 
 //.................................................................................
 
@@ -123,7 +123,7 @@ module siso_tranche4x4x4x4_mx_pos ( // Pulse high to latch
   siso_tranche4x4x4_mx_neg tranche1(.siso_in(t1),      .siso_out(t2),       .latch(p1));
   siso_tranche4x4x4_mx_neg tranche2(.siso_in(t2),      .siso_out(t3),       .latch(p2));
   siso_tranche4x4x4_mx_neg tranche3(.siso_in(t3),      .siso_out(siso_out), .latch(p3));
-endmodule;
+endmodule
 
 
 /*
@@ -146,7 +146,7 @@ module siso_slice4_mx_pos (      // Pulse high to latch
   (* keep *) sg13g2_mux2_2 mx3(.A1(siso_in[3]), .A0(fb[3]), .X(fb[3]), .S(latch_n));
 
   assign siso_out = fb;
-endmodule;
+endmodule
 
 //.................................................................................
 
@@ -162,5 +162,5 @@ module siso_slice4x4_mx_pos (    // Pulse high to latch
   siso_slice4_mx_pos slice1(.siso_in(t1),      .siso_out(t2),       .latch(latch[2]));
   siso_slice4_mx_pos slice2(.siso_in(t2),      .siso_out(t3),       .latch(latch[1]));
   siso_slice4_mx_pos slice3(.siso_in(t3),      .siso_out(siso_out), .latch(latch[0]));
-endmodule;
+endmodule
 */
