@@ -54,12 +54,12 @@ module siso_slice4_dl_neg (      // Pulse low to latch
     input  wire       latch      // pass/keep signal
 );
 
-  wire local;
-  (* keep *) sg13g2_inv_4 Amp(.Y(local), .A(latch));
-  (* keep *) sg13g2_dlhq_1 l0(.Q(siso_out[0]), .D(siso_in[0]), .GATE(local));
-  (* keep *) sg13g2_dlhq_1 l1(.Q(siso_out[1]), .D(siso_in[1]), .GATE(local));
-  (* keep *) sg13g2_dlhq_1 l2(.Q(siso_out[2]), .D(siso_in[2]), .GATE(local));
-  (* keep *) sg13g2_dlhq_1 l3(.Q(siso_out[3]), .D(siso_in[3]), .GATE(local));
+  wire latch_n;
+  (* keep *) sg13g2_inv_4 Amp(.Y(latch_n), .A(latch));
+  (* keep *) sg13g2_dlhq_1 l0(.Q(siso_out[0]), .D(siso_in[0]), .GATE(latch_n));
+  (* keep *) sg13g2_dlhq_1 l1(.Q(siso_out[1]), .D(siso_in[1]), .GATE(latch_n));
+  (* keep *) sg13g2_dlhq_1 l2(.Q(siso_out[2]), .D(siso_in[2]), .GATE(latch_n));
+  (* keep *) sg13g2_dlhq_1 l3(.Q(siso_out[3]), .D(siso_in[3]), .GATE(latch_n));
 endmodule;
 
 //.................................................................................
