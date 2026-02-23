@@ -94,7 +94,7 @@ module siso_tranche4x4x4_mx_pos ( // Pulse high to latch
 );
 
   wire [3:0] t1, t2, t3, p;
-  Inverters_x4(.Y(p), .A(latch));
+  Inverters_x4 Amp(.Y(p), .A(latch));
   siso_tranche4x4_mx_neg tranche0(.siso_in(siso_in), .siso_out(t1),	  .latch(p));
   siso_tranche4x4_mx_neg tranche1(.siso_in(t1),      .siso_out(t2),	  .latch(p));
   siso_tranche4x4_mx_neg tranche2(.siso_in(t2),      .siso_out(t3),	  .latch(p));
@@ -114,10 +114,10 @@ module siso_tranche4x4x4x4_mx_pos ( // Pulse high to latch
   wire [3:0] t1, t2, t3, q, p0, p1, p2, p3;
   // Double inversion, but last stage is per-tranche for better distance/reach
   Inverters_x4  Amp0(.Y(q ), .A(latch);
-  Inverters_x4  Amp0(.Y(p0), .A(q));
-  Inverters_x4  Amp1(.Y(p1), .A(q));
-  Inverters_x4  Amp2(.Y(p2), .A(q));
-  Inverters_x4  Amp3(.Y(p3), .A(q));
+  Inverters_x4  Amp1(.Y(p0), .A(q));
+  Inverters_x4  Amp2(.Y(p1), .A(q));
+  Inverters_x4  Amp3(.Y(p2), .A(q));
+  Inverters_x4  Amp4(.Y(p3), .A(q));
 
   siso_tranche4x4x4_mx_neg tranche0(.siso_in(siso_in), .siso_out(t1),       .latch(p0));
   siso_tranche4x4x4_mx_neg tranche1(.siso_in(t1),      .siso_out(t2),       .latch(p1));
