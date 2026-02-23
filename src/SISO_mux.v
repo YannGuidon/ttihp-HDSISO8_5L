@@ -55,13 +55,13 @@ module siso_slice4_mx_neg (      // Pulse low to latch
     input  wire       latch      // pass/keep signal
 );
 
-  wire local;
+  wire latch_n;
   wire [3:0] fb;
-  (* keep *) sg13g2_inv_4  Amp(.Y(local), .A(latch));
-  (* keep *) sg13g2_mux2_2 mx0(.A0(siso_in[0]), .A1(fb[0]), .X(fb[0]), .S(local));
-  (* keep *) sg13g2_mux2_2 mx1(.A0(siso_in[1]), .A1(fb[1]), .X(fb[1]), .S(local));
-  (* keep *) sg13g2_mux2_2 mx2(.A0(siso_in[2]), .A1(fb[2]), .X(fb[2]), .S(local));
-  (* keep *) sg13g2_mux2_2 mx3(.A0(siso_in[3]), .A1(fb[3]), .X(fb[3]), .S(local));
+    (* keep *) sg13g2_inv_4  Amp(.Y(latch_n), .A(latch));
+  (* keep *) sg13g2_mux2_2 mx0(.A0(siso_in[0]), .A1(fb[0]), .X(fb[0]), .S(latch_n));
+  (* keep *) sg13g2_mux2_2 mx1(.A0(siso_in[1]), .A1(fb[1]), .X(fb[1]), .S(latch_n));
+  (* keep *) sg13g2_mux2_2 mx2(.A0(siso_in[2]), .A1(fb[2]), .X(fb[2]), .S(latch_n));
+  (* keep *) sg13g2_mux2_2 mx3(.A0(siso_in[3]), .A1(fb[3]), .X(fb[3]), .S(latch_n));
 
   assign siso_out = fb;
 endmodule;
@@ -137,13 +137,13 @@ module siso_slice4_mx_pos (      // Pulse high to latch
     input  wire       latch      // pass/keep signal
 );
 
-  wire local;
+  wire latch_n;
   wire [3:0] fb;
-  (* keep *) sg13g2_inv_4  AmpShow0(.Y(local), .A(latch));
-  (* keep *) sg13g2_mux2_2 mx0(.A1(siso_in[0]), .A0(fb[0]), .X(fb[0]), .S(local));
-  (* keep *) sg13g2_mux2_2 mx1(.A1(siso_in[1]), .A0(fb[1]), .X(fb[1]), .S(local));
-  (* keep *) sg13g2_mux2_2 mx2(.A1(siso_in[2]), .A0(fb[2]), .X(fb[2]), .S(local));
-  (* keep *) sg13g2_mux2_2 mx3(.A1(siso_in[3]), .A0(fb[3]), .X(fb[3]), .S(local));
+  (* keep *) sg13g2_inv_4  AmpShow0(.Y(latch_n), .A(latch));
+  (* keep *) sg13g2_mux2_2 mx0(.A1(siso_in[0]), .A0(fb[0]), .X(fb[0]), .S(latch_n));
+  (* keep *) sg13g2_mux2_2 mx1(.A1(siso_in[1]), .A0(fb[1]), .X(fb[1]), .S(latch_n));
+  (* keep *) sg13g2_mux2_2 mx2(.A1(siso_in[2]), .A0(fb[2]), .X(fb[2]), .S(latch_n));
+  (* keep *) sg13g2_mux2_2 mx3(.A1(siso_in[3]), .A0(fb[3]), .X(fb[3]), .S(latch_n));
 
   assign siso_out = fb;
 endmodule;
