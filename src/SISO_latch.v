@@ -39,7 +39,7 @@ module Inverters_x4 (
   (* keep *) sg13g2_inv_4  Amp1(.Y(Y[1]), .A(A[1]));
   (* keep *) sg13g2_inv_4  Amp2(.Y(Y[2]), .A(A[2]));
   (* keep *) sg13g2_inv_4  Amp3(.Y(Y[3]), .A(A[3]));
-endmodule;
+endmodule
 
 `endif
 
@@ -60,7 +60,7 @@ module siso_slice4_dl_neg (      // Pulse low to latch
   (* keep *) sg13g2_dlhq_1 l1(.Q(siso_out[1]), .D(siso_in[1]), .GATE(latch_n));
   (* keep *) sg13g2_dlhq_1 l2(.Q(siso_out[2]), .D(siso_in[2]), .GATE(latch_n));
   (* keep *) sg13g2_dlhq_1 l3(.Q(siso_out[3]), .D(siso_in[3]), .GATE(latch_n));
-endmodule;
+endmodule
 
 //.................................................................................
 
@@ -77,7 +77,7 @@ module siso_tranche4x4_dl_neg (  // Pulse low to latch
   siso_slice4_dl_neg slice1(.siso_in(t1),      .siso_out(t2),       .latch(latch[2])); // p in reverse order
   siso_slice4_dl_neg slice2(.siso_in(t2),      .siso_out(t3),       .latch(latch[1]));
   siso_slice4_dl_neg slice3(.siso_in(t3),      .siso_out(siso_out), .latch(latch[0]));
-endmodule;
+endmodule
 
 //.................................................................................
 
@@ -95,7 +95,7 @@ module siso_tranche4x4x4_dl_pos ( // Pulse high to latch
   siso_tranche4x4_dl_neg tranche1(.siso_in(t1),      .siso_out(t2),       .latch(p));
   siso_tranche4x4_dl_neg tranche2(.siso_in(t2),      .siso_out(t3),       .latch(p));
   siso_tranche4x4_dl_neg tranche3(.siso_in(t3),      .siso_out(siso_out), .latch(p));
-endmodule;
+endmodule
 
 //.................................................................................
 
@@ -119,5 +119,5 @@ module siso_tranche4x4x4x4_dl_pos ( // Pulse high to latch
   siso_tranche4x4x4_dl_neg tranche1(.siso_in(t1),      .siso_out(t2),       .latch(p1));
   siso_tranche4x4x4_dl_neg tranche2(.siso_in(t2),      .siso_out(t3),       .latch(p2));
   siso_tranche4x4x4_dl_neg tranche3(.siso_in(t3),      .siso_out(siso_out), .latch(p3));
-endmodule;
+endmodule
 
