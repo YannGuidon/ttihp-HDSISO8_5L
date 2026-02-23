@@ -77,12 +77,12 @@ module tt_um_ygdes_hdsiso8 (
 
 
   // Select + resynch D_in
+  wire SISO_in;
   //      SISO_in <= DIN_SEL ? LFSR_BIT : D_IN;
-  // wire mux_Din;
   // (* keep *) sg13g2_mux2_2 mux2_Din(.A0(D_IN), .A1(LFSR_BIT), .S(DIN_SEL), .X(mux_Din));
   // (* keep *) sg13g2_dfrbpq_2 DFF_Din(.Q(SISO_in), .D(mux_Din), .RESET_B(INT_RESET), .CLK(CLK_OUT));
   // merged into 1
-    (* keep *) sg13g2_sdfrbpq_1 sync_Din(.Q(SISO_in), .D(D_IN),
+  (* keep *) sg13g2_sdfrbpq_1 sync_Din(.Q(SISO_in), .D(D_IN),
        .SCD(LFSR_BIT), .SCE(DIN_SEL), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
 ////////////////////////////// sub-modules //////////////////////////////
