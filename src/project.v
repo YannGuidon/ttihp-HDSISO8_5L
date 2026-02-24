@@ -36,7 +36,7 @@ module tt_um_ygdes_hdsiso8_dlhq (
 
 
   // SISO
-  wire D_out, D_IN;
+  wire D_OUT, D_IN;
   assign D_IN      = ui_in[3];
   assign uo_out[0] = D_OUT;
 
@@ -127,7 +127,7 @@ module tt_um_ygdes_hdsiso8_dlhq (
   assign siso_in4[1] = siso_out4[0];
   assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe,
   assign siso_in4[3] = siso_out4[2];  // mate le formatage
-  assign D_out       = siso_out4[3];
+  assign D_OUT       = siso_out4[3];
   assign latch4 = {
     Decoded8[0], // the first latch's data is locked during the transition from [0] to [1]
     Decoded8[2],
