@@ -82,7 +82,7 @@ module tt_um_ygdes_hdsiso8_dlhq (
   // assign CLK_OUT = CLK_SEL ? EXT_CLK : clk;
   (* keep *) sg13g2_mux2_2 mux_clk(.A0(clk), .A1(EXT_CLK), .S(CLK_SEL), .X(CLK_OUT));
   // ring oscillator anyone ?
-  (* keep *) sg13g2_inv_4 negClkOut(.Y(uo_out[1]), .A(CLK_OUT));
+  (* keep *) sg13g2_inv_4 negClkOut(.Y(CLK_OUTn), .A(CLK_OUT));
 
   wire INT_RESET;
   // Combined and resynch'ed Reset
