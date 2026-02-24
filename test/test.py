@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: © 2024 Tiny Tapeout
 # SPDX-License-Identifier: Apache-2.0
 
-# modified for the LFSR
+# modified for the LFSR / SISO
 # by Yann Guidon / 2026
 
 import cocotb
@@ -13,7 +13,7 @@ CLK_SEL     =   1  # assign CLK_SEL   = ui_in[0]; (0 is internal, 1 is EXT_CLK)
 EXT_CLK     =   2  # assign EXT_CLK   = ui_in[1];
 EXT_RST     =   4  # assign EXT_RST   = ui_in[2]; (extra reset, pull-up if you want continuous operation)
 D_IN        =   8  # assign D_IN      = ui_in[3]; (serial data in, from external source)
-MX_DL_SEL   =  16  # assign MX_DL_SEL = ui_in[4]; (0 is standard Latches, 1 is MUX2)
+#              16  # assign           = ui_in[4]; unused
 SHOW_LFSR   =  32  # assign SHOW_LFSR = ui_in[5]; (display the LFSR on uio_out if 1, otherwise show the Johnson counter pulses if 0)
 LFSR_EN     =  64  # assign LFSR_EN   = ui_in[6]; (set to 1 before reset to allow LFSR operation)
 DIN_SEL     = 128  # assign DIN_SEL   = ui_in[7]; (loop back the LFSR to the SISO input when 1, otherwise use external input D_IN), 
@@ -121,24 +121,3 @@ async def test_project(dut):
     await ClockCycles(dut.clk, 10000) # let it run for a while to see the LFSR output from the SIO
 
     dut._log.info(" Johnson8 OK !")
-
-# junkyard...
-
-#    for i in range(1, 254):
-#      await ClockCycles(dut.clk, 1)
-#      assert dut.uo_out.value[6] == 0
-
-#    for i in range(1, ):   # run baby run
-#      await ClockCycles(dut.clk, 1)
-#      if i > 180:
-#        dut._log.info(str(i) + ": " + str(dut.uo_out.value[6]))
-
-#    await ClockCycles(dut.clk, 1)
-#    if dut.uo_out.value[6] :
-#      dut._log.info("Period")
-#    assert dut.uo_out.value[6] == 1
-
-#    dut.ui_in.value = 20
-#    await ClockCycles(dut.clk, 1)
-#    assert dut.uo_out.value == 129
-
