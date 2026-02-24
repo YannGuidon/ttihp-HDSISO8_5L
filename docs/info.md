@@ -1,6 +1,6 @@
 ## How it works
 
-As the name implies, it's a high density shift register for deep digital delays. This one aims at 512 bits.
+As the name implies, it's a high density shift register for deep digital delays. This one aims at 512 bits of capacity.
 
 According to the PDK for CMOS IHP at
 https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_stdcell/doc/sg13g2_stdcell_typ_1p20V_25C.pdf
@@ -9,7 +9,7 @@ https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_st
 * Area of sg13g2_dlhq_1   : 30.84480
 * Area of sg13g2_mux2_1   : 18.14400
 
-MUX2 is almost 3× smaller than the DFF gate and could be used as a latch by feeding its output back to an input (if you know the old antifuse Actel FPGAs sur as A1xxx, you know what I mean). This might not work well so I implement two versions:
+MUX2 is almost 3× smaller than the DFF gate and could be used as a latch by feeding its output back to an input (if you know the old antifuse Actel FPGAs such as A1xxx, you know what I mean). This might not work well so I implement two versions:
 
 * tt_um_ygdes_hdsiso8_mux2 with the MUX2 trick, for the best density,
 * tt_um_ygdes_hdsiso8_dlhq with the typical transparent latch DLHQ, whose size is in-between.
@@ -22,16 +22,14 @@ The apparent complexity comes from the 8-phase clock, which is brought to the "a
 
 Compared to a shift register with normal DFF cells, it could store twice the same amount of bits per unit of surface, without the need of full-custom cells, as the controller's (sequencer, mux and demux) size becomes insignificant when the chain gets longer. Depths of several kilobits are possible without too much hassles (if the synth agrees), without a mad clock network, reducing simultaneous switching noise... Because since the pulses are slower, their traces are also shorter: each pulse affects only 1/8th of the cells at any time.
 
-Ideally, manual placement of the 8 chains should be manual/tooled, not thrown at random. For implementation, I use a "tuned" Verilog workflow and instatiate cells directly from
+Ideally, manual placement of the 8 chains should be manual/tooled, not thrown at random. For implementation, I use a "tuned" Verilog workflow and instantiate cells directly from
 https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v . For simulation, parts of this file are copy-pasted to gate-specific files to remove some warnings (find them in /test).
-
-As usual, it all comes "as is" with no guarantee whatsoever. I come in good faith but it's my first rodeo on this toolchain. It's wild.
 
 ## How to test
 
 Good to know:
 * Clock and Reset can be asserted by external pins and internal signals.
-* The pin CLK_OUT copies the currently selected clock (negated), for external triggering and troubleshooting. If it oscillates, it should work.
+* The pin CLK_OUT copies the currently selected clock (negated), for external triggering and troubleshooting. If it oscillates, you're good.
 * External reset pin EXT_RST (asserted at 0 like the internal one) overrides the internal reset, don't let it float. A weak pull-up to 1 is advised.
 * External clock (pin EXT_CLK) can be selected when pin CLK_SEL=1 (don't let them float).
 * Always assert EXT_RST (to 0) while changing the state of CLK_SEL.
@@ -39,16 +37,16 @@ Good to know:
 Startup sequence:
 * EXT_RST asserted (0)
 * Choose CLK_SEL's value
-* Run that clock, then
+* Run that clock
 * Release EXT_RST (to 1, and RESET is internally clock-resynchronised so give it a couple of cycles to come into effect)
 * Input a '1' or a '0' on D_IN, and observe the value appearing on D_OUT after about 512 clock cycles.
 
 Extra insight and observability:
 * When SHOW_LFSR=0, the IO port shows the 8 internal staggered pulses, turning from 0 to 1 and back to 0 in a linear sequence. It's just like a 4017 but 8 bits, since it's a Johnson counter too.
 * 4 output pins provide the internal state of that 4-bit Johnson counter, or ring counter, thus you should observe a pretty pattern where only one pin changes at each clock cycle.
-* You can measure the routing latency of the pins/pads/internal wires because CLK_OUT is inverted so just tie it to EXT_CLK with pin CLK_SEL=1. Probe with an oscillocsope and voilà, you have a free-running oscillator and you can directly measure the low and high times, each corresponding to one trip on the in or out wire.
-
 ![](Johnson8.png)
+
+* You can measure the routing latency of the pins/pads/internal wires because CLK_OUT is inverted so just tie it to EXT_CLK with pin CLK_SEL=1. Probe with an oscillocsope and voilà, you have a free-running oscillator and you can directly measure the low and high times, each corresponding to one trip on the in or out wire.
 
 ## Bonus: LFSR
 
