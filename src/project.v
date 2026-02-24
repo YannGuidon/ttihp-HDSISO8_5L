@@ -7,7 +7,7 @@
 
 `default_nettype none
 
-module tt_um_ygdes_hdsiso8 (
+module tt_um_ygdes_hdsiso8_dlhq (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -25,22 +25,22 @@ module tt_um_ygdes_hdsiso8 (
 
 
   // General/housekeeping signals
-  wire CLK_SEL, EXT_CLK, EXT_RST, D_IN, MX_DL_SEL;
+  wire CLK_SEL, EXT_CLK, EXT_RST;
   assign CLK_SEL   = ui_in[0];
   assign EXT_CLK   = ui_in[1];
   assign EXT_RST   = ui_in[2];
-  assign D_IN      = ui_in[3];
-  assign MX_DL_SEL = ui_in[4];
+//assign           = ui_in[4]; // unused
 
-  wire CLK_OUT;
-  assign uo_out[1] = ~CLK_OUT;  // ring oscillator anyone ?
+  wire CLK_OUT, CLK_OUTn;
+  assign uo_out[1] = CLK_OUTn;
 
 
   // SISO
-  wire DL_out, MX_out;
-  // assign uo_out[0] = D_OUT;
-  (* keep *) sg13g2_mux2_2 mux2_Din(.A0(DL_out), .A1(MX_out), .S(MX_DL_SEL), .X(uo_out[0]));
+  wire D_out, D_IN;
+  assign D_IN      = ui_in[3];
+  assign uo_out[0] = D_OUT;
 
+  // Johnson counter
   wire [3:0] Johnson4;
   assign uo_out[2] = Johnson4[0];
   assign uo_out[3] = Johnson4[1];
@@ -60,18 +60,31 @@ module tt_um_ygdes_hdsiso8 (
 
 
   // multiplexed output
+  // assign uio_out = SHOW_LFSR ? LFSR_state8 : Decoded8 ;
+  wire SHOW_LFSR_n1, SHOW_LFSR_n2;
+  (* keep *) sg13g2_inv_4 negShow1(.Y(SHOW_LFSR_n1), .A(SHOW_LFSR));
+  (* keep *) sg13g2_inv_4 negShow2(.Y(SHOW_LFSR_n2), .A(SHOW_LFSR));
   wire [7:0] LFSR_state8, Decoded8;
-  assign uio_out = SHOW_LFSR ? LFSR_state8 : Decoded8 ;
+  (* keep *) sg13g2_mux2_2 mux_uio0(.A0(LFSR_state8[0]), .A1(Decoded8[0]), .S(SHOW_LFSR_n1), .X(uio_out[0]));
+  (* keep *) sg13g2_mux2_2 mux_uio1(.A0(LFSR_state8[1]), .A1(Decoded8[1]), .S(SHOW_LFSR_n1), .X(uio_out[1]));
+  (* keep *) sg13g2_mux2_2 mux_uio2(.A0(LFSR_state8[2]), .A1(Decoded8[2]), .S(SHOW_LFSR_n1), .X(uio_out[2]));
+  (* keep *) sg13g2_mux2_2 mux_uio3(.A0(LFSR_state8[3]), .A1(Decoded8[3]), .S(SHOW_LFSR_n1), .X(uio_out[3]));
+  (* keep *) sg13g2_mux2_2 mux_uio4(.A0(LFSR_state8[4]), .A1(Decoded8[4]), .S(SHOW_LFSR_n2), .X(uio_out[4]));
+  (* keep *) sg13g2_mux2_2 mux_uio5(.A0(LFSR_state8[5]), .A1(Decoded8[5]), .S(SHOW_LFSR_n2), .X(uio_out[5]));
+  (* keep *) sg13g2_mux2_2 mux_uio6(.A0(LFSR_state8[6]), .A1(Decoded8[6]), .S(SHOW_LFSR_n2), .X(uio_out[6]));
+  (* keep *) sg13g2_mux2_2 mux_uio7(.A0(LFSR_state8[7]), .A1(Decoded8[7]), .S(SHOW_LFSR_n2), .X(uio_out[7]));
 
 
 ////////////////////////////// custom soup //////////////////////////////
 
-  wire INT_RESET;
-
+  // select the clock
   // CLK_OUT = clk if CLK_SEL=0, else EXT_CLK
   // assign CLK_OUT = CLK_SEL ? EXT_CLK : clk;
   (* keep *) sg13g2_mux2_2 mux_clk(.A0(clk), .A1(EXT_CLK), .S(CLK_SEL), .X(CLK_OUT));
+  // ring oscillator anyone ?
+  (* keep *) sg13g2_inv_4 negClkOut(.Y(uo_out[1]), .A(CLK_OUT));
 
+  wire INT_RESET;
   // Combined and resynch'ed Reset
   (* keep *) sg13g2_dfrbpq_2 DFF_reset(.Q(INT_RESET), .D(EXT_RST), .RESET_B(rst_n), .CLK(CLK_OUT));
 
@@ -79,11 +92,8 @@ module tt_um_ygdes_hdsiso8 (
   // Select + resynch D_in
   wire SISO_in;
   //      SISO_in <= DIN_SEL ? LFSR_BIT : D_IN;
-  // (* keep *) sg13g2_mux2_2 mux2_Din(.A0(D_IN), .A1(LFSR_BIT), .S(DIN_SEL), .X(mux_Din));
-  // (* keep *) sg13g2_dfrbpq_2 DFF_Din(.Q(SISO_in), .D(mux_Din), .RESET_B(INT_RESET), .CLK(CLK_OUT));
-  // merged into 1
   (* keep *) sg13g2_sdfrbpq_1 sync_Din(.Q(SISO_in), .D(D_IN),
-       .SCD(LFSR_BIT), .SCE(DIN_SEL), .RESET_B(INT_RESET), .CLK(CLK_OUT));
+                         .SCD(LFSR_BIT), .SCE(DIN_SEL), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
 ////////////////////////////// sub-modules //////////////////////////////
 
@@ -102,37 +112,62 @@ module tt_um_ygdes_hdsiso8 (
     .Decoded8(Decoded8));
 
 
-// JUST A TEST FOR NOW  !!!!
+// JUST A TEST FOR NOW  !!!! The MUX/DEMUX IS STILL MISSING SO IT'S F/8
 
-  // looping the SISO on itself to get 8× downsampling but no demux yet
+  // looping the SISO on itself to get 8× downsampling because no demux yet
+
   // First, sample the data at the right moment
   wire back;
     (* keep *) sg13g2_sdfrbpq_1 sync8(.Q(back), .D(back),
        .SCD(SISO_in), .SCE(Decoded8[5]), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
-    wire [3:0] siso_in4, siso_out4, latch4, chain4;    // l'originalité des noms de variables......
+  wire [3:0] siso_in4, siso_out4, latch4, latch4neg,
+          chain4_a, chain4_b, chain4_c, chain4_d, chain4_e ;    // l'originalité des noms de variables......
   assign siso_in4[0] = back;
   assign siso_in4[1] = siso_out4[0];
   assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe,
   assign siso_in4[3] = siso_out4[2];  // mate le formatage
-  assign DL_out      = siso_out4[3];
-  assign MX_out      = siso_out4[1];  // juste pour driver le signal, on verra après
+  assign D_out       = siso_out4[3];
   assign latch4 = {
-    Decoded8[0], // Data is latched during the transition from [0] to [1]
+    Decoded8[0], // the first latch's data is locked during the transition from [0] to [1]
     Decoded8[2],
-    Decoded8[4],
+    Decoded8[4], // Input is sampled by sync8 at [5] so setup&hold should be comfortable.
     Decoded8[6]
   };
-// 128 transparent latches
-  siso_tranche4x4x4_dl_pos siso256_1(
-    .siso_in( siso_in4),
-    .siso_out(chain4),
+  Inverters_x4 BoostLatch(.Y(latch4neg), .A(latch4));
+
+// goal=512 bits, actual storage is × 4/3 = 682
+// 2×( 256+64+16 ) = 672 bits, close enough.
+
+  siso_tranche4x4x4x4_dl_pos siso256_1(
+    .siso_in(siso_in4),
+    .siso_out(chain4_a),
     .latch(latch4));
 
-  siso_tranche4x4x4_dl_pos siso256_2(
-    .siso_in(chain4),
-    .siso_out(siso_out4),
+  siso_tranche4x4x4x4_dl_pos siso256_2(
+    .siso_in(chain4_a),
+    .siso_out(chain4_b),
     .latch(latch4));
+
+  siso_tranche4x4x4_dl_pos siso64_1(
+    .siso_in(chain4_b),
+    .siso_out(chain4_c),
+    .latch(latch4));
+
+  siso_tranche4x4x4_dl_pos siso64_2(
+    .siso_in(chain4_c),
+    .siso_out(chain4_d),
+    .latch(latch4));
+
+  siso_tranche4x4_dl_neg siso16_1(
+    .siso_in(chain4_d),
+    .siso_out(chain4_e),
+    .latch(latch4neg));  // NEG here
+
+  siso_tranche4x4_dl_neg siso16_2(
+    .siso_in(chain4_e),
+    .siso_out(siso_out4),
+    .latch(latch4neg));  // NEG here too
 
 
 ////////////////////////////// All the dummies go here //////////////////////////////
@@ -141,6 +176,7 @@ module tt_um_ygdes_hdsiso8 (
   wire _unused = &{
     ena,       // They said not to bother, then ... why provide it ?
     uio_in,
+    ui_in[4],
     1'b0};
 
 endmodule
