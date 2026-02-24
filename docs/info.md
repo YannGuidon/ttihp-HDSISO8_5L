@@ -62,9 +62,11 @@ An 8-bit LFSR is integrated to ease testing. Thus an oscilloscope and a variable
 * See if both traces match (add some delay on LFSR_BIT if necessary).
 * Send me pictures of your scope traces!
 
-Note: 8 bits gives a period of 255, half of the SISO's depth, a small shift is expected and the SISO should store twice the whole cycle, but the output should align anyway.
+Note 1: 8 bits gives a period of 255, half of the SISO's depth, a small shift is expected and the SISO should store twice the whole cycle, but the output should align anyway.
 
 Note 2: The LFSR_PERIOD pulse should appear 193 clock cycles after the release of the RESET pin.
+
+Note 3: The RESET signal does not clear the contents of the SISO. Don't forget to flush its contents before use.
 
 ![](TT_interface_LFSR8.png)
 
