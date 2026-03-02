@@ -111,20 +111,34 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .DFF4(Johnson4),
     .Decoded8(Decoded8));
 
-  wire [3:0] siso_even, siso_odd;
+  wire [3:0] siso_start_even, siso_start_odd;
+  wire [3:0] latch4_even, latch4_odd;
+  wire [3:0] siso_end_even, siso_end_odd;
 
   siso_demux_mux_dl demux_mux(
     .RESET(INT_RESET),
     .CLK(CLK_OUT),
     .Din(SISO_in),
     .Latch8(Decoded8),
-    .siso_first_even(siso_even),
-    .siso_first_odd(siso_odd),
-
-    .siso_last_even(siso_even),
-    .siso_last_odd(siso_odd),
+    .Latch_even(latch4_even),
+    .Latch_odd(latch4_odd),
+    .siso_first_even(siso_start_even),
+    .siso_first_odd(siso_start_odd),
+    .siso_last_even(siso_end_even),
+    .siso_last_odd(siso_end_odd),
     .Dout(D_OUT));
 
+// plugging 64*2 latches:
+  siso_tranche4x4x4_dl_pos siso64_1(
+    .siso_in(siso_start_even),
+    .siso_out(siso_end_even),
+    .latch(latch4_even)); // not neg here.
+  siso_tranche4x4x4_dl_pos siso64_2(
+    .siso_in(siso_start_odd),
+    .siso_out(siso_end_odd),
+    .latch(latch4_odd)); // not neg here.
+
+    
 /*    
   wire [3:0] siso_in4, siso_out4, latch4, latch4neg,
     chain4_e ;
