@@ -82,7 +82,8 @@ endmodule
 
 //.................................................................................
 
-// Adds 16(*3/4)=12 cycles, + 3DFF => 15 cycles
+// Adds 32 latches, 16*2(*3/4) = 24 cycles, + 3DFF => 27 cycles
+// but now working as expected (yet)
 module siso_demux_mux_dl(
     input  wire       RESET,
     input  wire       CLK,
@@ -107,8 +108,8 @@ module siso_demux_mux_dl(
   wire [3:0] exit_even, exit_odd;
   wire Dout_even, Dout_odd, doe1, doe2, doo1, doo2;
 
-  assign Latch_even = { Latch8[0], Latch8[2], Latch8[4], Latch8[6] };
-  assign Latch_odd  = { Latch8[1], Latch8[3], Latch8[5], Latch8[7] };
+  assign Latch_even = { Latch8[6], Latch8[4], Latch8[2], Latch8[0] };
+  assign Latch_odd  = { Latch8[7], Latch8[5], Latch8[3], Latch8[1] };
 
 // Ralentissement en entrée
 // NOR all bits of Latch_odd:
