@@ -135,18 +135,16 @@ module siso_demux_mux_dl(
   siso_slice4_dl_neg slice2o(.siso_in({to2[3], Dodd,   to2[1], to2[0]}), .siso_out(to3),             .latch(LOneg[1]));
   siso_slice4_dl_neg slice3o(.siso_in({Dodd,   to3[2], to3[1], to3[0]}), .siso_out(siso_first_odd),  .latch(LOneg[0]));
 
-// Re-multiplexage
+// Re-multiplexing
   assign exit_even = {te3[3], te2[2], te1[1], siso_last_even[0]};
   assign exit_odd  = {to3[3], to2[2], to1[1], siso_last_odd [0]};
 
-  // index latch = index exit  => no setup&hold, loss of storage
-  // index latch = (index exit + 2) mod 4 => maximum setup&hold but inversion
-  (* keep *) sg13g2_a22oi_1  mux_comb0_even(.Y(doe1), .A1(Latch_even[3]), .A2(exit_even[0]), .B1(Latch_even[0]), .B2(exit_even[1]));
-  (* keep *) sg13g2_a22oi_1  mux_comb1_even(.Y(doe2), .A1(Latch_even[1]), .A2(exit_even[2]), .B1(Latch_even[2]), .B2(exit_even[3]));
+  (* keep *) sg13g2_a22oi_1  mux_comb0_even(.Y(doe1), .A1(Latch_even[3]), .A2(exit_even[0]), .B1(Latch_even[2]), .B2(exit_even[1]));
+  (* keep *) sg13g2_a22oi_1  mux_comb1_even(.Y(doe2), .A1(Latch_even[1]), .A2(exit_even[2]), .B1(Latch_even[0]), .B2(exit_even[3]));
   (* keep *) sg13g2_nand2_1  mux_nand2_even(.Y(Dout_even), .A(doe1), .B(doe2));
 
-  (* keep *) sg13g2_a22oi_1  mux_comb0_odd( .Y(doo1),  .A1(Latch_odd[3]), .A2(exit_odd[0]),  .B1(Latch_odd[0]), .B2(exit_odd[1]));
-  (* keep *) sg13g2_a22oi_1  mux_comb1_odd( .Y(doo2),  .A1(Latch_odd[1]), .A2(exit_odd[2]),  .B1(Latch_odd[2]), .B2(exit_odd[3]));
+  (* keep *) sg13g2_a22oi_1  mux_comb0_odd( .Y(doo1),  .A1(Latch_odd[3]), .A2(exit_odd[0]),  .B1(Latch_odd[2]), .B2(exit_odd[1]));
+  (* keep *) sg13g2_a22oi_1  mux_comb1_odd( .Y(doo2),  .A1(Latch_odd[1]), .A2(exit_odd[2]),  .B1(Latch_odd[0]), .B2(exit_odd[3]));
   (* keep *) sg13g2_nand2_1  mux_nand2_odd( .Y(Dout_odd),  .A(doo1), .B(doo2));
 
 // output selection (odd/even)
