@@ -111,16 +111,21 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .DFF4(Johnson4),
     .Decoded8(Decoded8));
 
+  wire [3:0] siso_even, siso_odd;
 
-// JUST A TEST FOR NOW  !!!! The MUX/DEMUX IS STILL MISSING SO IT'S F/8
+  siso_demux_mux_dl(
+    .RESET(INT_RESET),
+    .CLK(CLK_OUT),
+    .Din(SISO_in),
+    .Latch8(Decoded8),
+    .siso_first_even(siso_even),
+    .siso_first_odd(siso_odd),
 
-  // looping the SISO on itself to get 8× downsampling because no demux yet
+    .siso_last_even(siso_even),
+    .siso_last_odd(siso_odd),
+    .Dout(D_OUT));
 
-  // First, sample the data at the right moment
-  wire back;
-    (* keep *) sg13g2_sdfrbpq_1 sync8(.Q(back), .D(back),
-       .SCD(SISO_in), .SCE(Decoded8[5]), .RESET_B(INT_RESET), .CLK(CLK_OUT));
-
+/*    
   wire [3:0] siso_in4, siso_out4, latch4, latch4neg,
     chain4_e ;
   assign siso_in4[0] = back;
@@ -150,7 +155,7 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .siso_in(chain4_e),
     .siso_out(siso_out4),
     .latch(latch4neg));  // NEG here too
-
+*/
 
 ////////////////////////////// All the dummies go here //////////////////////////////
 
