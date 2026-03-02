@@ -118,17 +118,17 @@ module siso_demux_mux_dl(
 
 // Le gros du délai : les 2 triangles dans un carré 4×4 chacun (odd+even)
 // soit 2 copies modifiées de siso_tranche4x4_dl_neg
-  Inverters_x4 BoostLatch(.Y(LEneg), .A(Latch_even));
-  siso_slice4_dl_neg slice0(.siso_in({siso_last_even[3:1], Deven}),     .siso_out(te1),             .latch(LEneg[3]));
-  siso_slice4_dl_neg slice1(.siso_in({te1[3], te1[2], Deven,  te1[0]}), .siso_out(te2),             .latch(LEneg[2]));
-  siso_slice4_dl_neg slice2(.siso_in({te2[3], Deven,  te2[1], te2[0]}), .siso_out(te3),             .latch(LEneg[1]));
-  siso_slice4_dl_neg slice3(.siso_in({Deven,  te3[2], te3[1], te3[0]}), .siso_out(siso_first_even), .latch(LEneg[0]));
+  Inverters_x4 BoostLatchEven(.Y(LEneg), .A(Latch_even));
+  siso_slice4_dl_neg slice0e(.siso_in({siso_last_even[3:1], Deven}),     .siso_out(te1),             .latch(LEneg[3]));
+  siso_slice4_dl_neg slice1e(.siso_in({te1[3], te1[2], Deven,  te1[0]}), .siso_out(te2),             .latch(LEneg[2]));
+  siso_slice4_dl_neg slice2e(.siso_in({te2[3], Deven,  te2[1], te2[0]}), .siso_out(te3),             .latch(LEneg[1]));
+  siso_slice4_dl_neg slice3e(.siso_in({Deven,  te3[2], te3[1], te3[0]}), .siso_out(siso_first_even), .latch(LEneg[0]));
 
-  Inverters_x4 BoostLatch(.Y(LOneg), .A(Latch_odd));
-  siso_slice4_dl_neg slice0(.siso_in({siso_last_odd [3:1], Dodd}),      .siso_out(to1),             .latch(LOneg[3]));
-  siso_slice4_dl_neg slice1(.siso_in({to1[3], to1[2], Dodd,   to1[0]}), .siso_out(to2),             .latch(LOneg[2]));
-  siso_slice4_dl_neg slice2(.siso_in({to2[3], Dodd,   to2[1], to2[0]}), .siso_out(to3),             .latch(LOneg[1]));
-  siso_slice4_dl_neg slice3(.siso_in({Dodd,   to3[2], to3[1], to3[0]}), .siso_out(siso_first_odd),  .latch(LOneg[0]));
+  Inverters_x4 BoostLatchOdd(.Y(LOneg), .A(Latch_odd));
+  siso_slice4_dl_neg slice0o(.siso_in({siso_last_odd [3:1], Dodd}),      .siso_out(to1),             .latch(LOneg[3]));
+  siso_slice4_dl_neg slice1o(.siso_in({to1[3], to1[2], Dodd,   to1[0]}), .siso_out(to2),             .latch(LOneg[2]));
+  siso_slice4_dl_neg slice2o(.siso_in({to2[3], Dodd,   to2[1], to2[0]}), .siso_out(to3),             .latch(LOneg[1]));
+  siso_slice4_dl_neg slice3o(.siso_in({Dodd,   to3[2], to3[1], to3[0]}), .siso_out(siso_first_odd),  .latch(LOneg[0]));
 
 // Re-multiplexage
   assign exit_even = {te3[3], te2[2], te1[1], siso_last_even[0]};
