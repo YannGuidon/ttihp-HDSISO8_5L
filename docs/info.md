@@ -1,8 +1,6 @@
 ## How it works
 
-As the name implies, it's a high density shift register for deep digital delays. This one aims at 512 bits of capacity.
-
-According to the PDK for CMOS IHP at
+As the name implies, it's a high density shift register for deep digital delays. According to the PDK for CMOS IHP at
 https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_stdcell/doc/sg13g2_stdcell_typ_1p20V_25C.pdf
 
 * Area of sg13g2_dfrbpq_1 : 48.98880
@@ -10,12 +8,9 @@ https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_st
 * Area of sg13g2_mux2_1   : 18.14400
 * Area of sg13g2_a21oi_1  : (×2) = 18.14400 (same as sg13g2_o21ai_1)
 
-MUX2 is almost 3× smaller than the DFF gate and could be used as a latch by feeding its output back to an input (just like with the old antifuse Actel FPGAs such as A1xxx). This trick is rejected by the tools but in the same area, I implement a SR latch with enable, using combined and compact OR/AND gates. I implement two versions:
+MUX2 is almost 3× smaller than the DFF gate and could be used as a latch by feeding its output back to an input (just like with the old antifuse Actel FPGAs such as A1xxx). This trick is rejected by the tools but in the same area, I implement a SR latch with enable, using combined and compact OR/AND gates.
 
-* tt_um_ygdes_hdsiso8_rs with the flip-flop trick, for the best density, in a different project/tile
-* tt_um_ygdes_hdsiso8_dlhq (this project) with the typical transparent latch DLHQ, whose size is in-between.
-
-This shift register uses 4 latches to store 3 bits at a given time and 4 non-overlapping "clock" pulses perform the shifting. Slowly. Just like below, but with 8 parallel chains.
+This project "tt_um_ygdes_hdsiso8_dlhq" immplements the conventional transparent latch DLHQ, whose size is in-between. The shift register uses 4 latches to store 3 bits at a given time and 4 non-overlapping "clock" pulses perform the shifting. Slowly. Just like below, but with 8 parallel chains.
 
 ![](ShiftRegister_latches.png)
 
