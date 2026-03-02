@@ -88,6 +88,8 @@ module siso_demux_mux_dl(
     input  wire       CLK,
     input  wire       Din,
     input  wire [7:0] Latch8,
+    output wire [3:0] Latch_even,
+    output wire [3:0] Latch_odd,
     output wire [3:0] siso_first_even,
     output wire [3:0] siso_first_odd,
 
@@ -99,7 +101,7 @@ module siso_demux_mux_dl(
 );
 
   wire Even_odd, Deven, Dodd, DevenN, DoddN, FbEven, FbOdd;
-  wire [3:0] Latch_even, Latch_odd, LEneg, LOneg;
+  wire [3:0] LEneg, LOneg;
   wire [3:0] te1, te2, te3;
   wire [3:0] to1, to2, to3;
   wire [3:0] exit_even, exit_odd;
