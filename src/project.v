@@ -122,7 +122,7 @@ module tt_um_ygdes_hdsiso8_dlhq (
        .SCD(SISO_in), .SCE(Decoded8[5]), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
   wire [3:0] siso_in4, siso_out4, latch4, latch4neg,
-          chain4_a, chain4_b, chain4_c, chain4_d, chain4_e ;    // l'originalité des noms de variables......
+          chain4_a, chain4_b, chain4_c, chain4_d, chain4_e ;
   assign siso_in4[0] = back;
   assign siso_in4[1] = siso_out4[0];
   assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe,
@@ -139,28 +139,28 @@ module tt_um_ygdes_hdsiso8_dlhq (
 // goal=512 bits, actual storage is × 4/3 = 682
 // 2×( 256+64+16 ) = 672 bits, close enough.
 
-  siso_tranche4x4x4x4_dl_pos siso256_1(
-    .siso_in(siso_in4),
-    .siso_out(chain4_a),
-    .latch(latch4));
+//  siso_tranche4x4x4x4_dl_pos siso256_1(
+//    .siso_in(siso_in4),
+//    .siso_out(chain4_a),
+//    .latch(latch4));
 
-  siso_tranche4x4x4x4_dl_pos siso256_2(
-    .siso_in(chain4_a),
-    .siso_out(chain4_b),
-    .latch(latch4));
+//  siso_tranche4x4x4x4_dl_pos siso256_2(
+//    .siso_in(chain_a),
+//    .siso_out(chain4_b),
+//    .latch(latch4));
 
-  siso_tranche4x4x4_dl_pos siso64_1(
-    .siso_in(chain4_b),
-    .siso_out(chain4_c),
-    .latch(latch4));
+//  siso_tranche4x4x4_dl_pos siso64_1(
+//    .siso_in(chain4_b),
+//    .siso_out(chain4_c),
+//    .latch(latch4));
 
-  siso_tranche4x4x4_dl_pos siso64_2(
-    .siso_in(chain4_c),
-    .siso_out(chain4_d),
-    .latch(latch4));
+//  siso_tranche4x4x4_dl_pos siso64_2(
+//    .siso_in(chain4_c),
+//    .siso_out(chain4_d),
+//    .latch(latch4));
 
   siso_tranche4x4_dl_neg siso16_1(
-    .siso_in(chain4_d),
+    .siso_in(siso_in4),
     .siso_out(chain4_e),
     .latch(latch4neg));  // NEG here
 
