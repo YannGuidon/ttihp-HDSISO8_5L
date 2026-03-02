@@ -81,6 +81,8 @@ endmodule
 
 
 //.................................................................................
+
+// Adds 16(*3/4)=12 cycles, + 3DFF => 15 cycles
 module siso_demux_mux_dl(
     input  wire       RESET,
     input  wire       CLK,
@@ -96,7 +98,7 @@ module siso_demux_mux_dl(
     output wire       Dout
 );
 
-  wire fb1, fb2, fb3, Even_odd, Deven, Dodd, DevenN, DoddN, FbEven, FbOdd;
+  wire Even_odd, Deven, Dodd, DevenN, DoddN, FbEven, FbOdd;
   wire [3:0] Latch_even, Latch_odd, LEneg, LOneg;
   wire [3:0] te1, te2, te3;
   wire [3:0] to1, to2, to3;
