@@ -139,7 +139,7 @@ module tt_um_ygdes_hdsiso8_dlhq (
 //  siso_tranche4x4x4_dl_pos siso64_2(
 //    .siso_in(chain4_c),
 //    .siso_out(chain4_d),
-//    .latch(latch4));
+    //    .latch(latch4)); // not neg here.
 
   siso_tranche4x4_dl_neg siso16_1(
     .siso_in(siso_in4),
