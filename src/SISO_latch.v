@@ -111,7 +111,7 @@ module siso_demux_mux_dl(
   assign Latch_even = { Latch8[6], Latch8[4], Latch8[2], Latch8[0] };
   assign Latch_odd  = { Latch8[7], Latch8[5], Latch8[3], Latch8[1] };
 
-// Ralentissement en entrée
+// slowdown 2x at the input
 // NOR all bits of Latch_odd:
   (* keep *) sg13g2_nor4_1 Nor_EvenOdd(.Y(Even_odd), .A(Latch8[1]), .B(Latch8[3]), .C(Latch8[5]), .D(Latch8[7]));
   (* keep *) sg13g2_sdfrbp_1 sync_Deven(.Q(FbEven),  .Q_N(DevenN), .D(Din ),  .SCD(FbEven), .SCE(Even_odd), .RESET_B(RESET), .CLK(CLK));
@@ -138,13 +138,15 @@ module siso_demux_mux_dl(
 // Re-multiplexage
   assign exit_even = {te3[3], te2[2], te1[1], siso_last_even[0]};
   assign exit_odd  = {to3[3], to2[2], to1[1], siso_last_odd [0]};
- (* keep *) sg13g2_a22oi_1  mux_comb0_even(.Y(doe1), .A1(Latch8[4]), .A2(exit_even[0]), .B1(Latch8[6]), .B2(exit_even[1]));
- (* keep *) sg13g2_a22oi_1  mux_comb1_even(.Y(doe2), .A1(Latch8[0]), .A2(exit_even[2]), .B1(Latch8[2]), .B2(exit_even[3]));
- (* keep *) sg13g2_nand2_1  mux_nand2_even(.Y(Dout_even), .A(doe1), .B(doe2));
 
- (* keep *) sg13g2_a22oi_1  mux_comb0_odd( .Y(doo1),  .A1(Latch8[5]), .A2(exit_odd[0]),  .B1(Latch8[7]), .B2(exit_odd[1]));
- (* keep *) sg13g2_a22oi_1  mux_comb1_odd( .Y(doo2),  .A1(Latch8[1]), .A2(exit_odd[2]),  .B1(Latch8[3]), .B2(exit_odd[3]));
- (* keep *) sg13g2_nand2_1  mux_nand2_odd( .Y(Dout_odd),  .A(doo1), .B(doo2));
+  // index latch = (index exit + 2) mod 4 => maximum setup&hold
+  (* keep *) sg13g2_a22oi_1  mux_comb0_even(.Y(doe1), .A1(Latch_even[2]), .A2(exit_even[0]), .B1(Latch_even[3]), .B2(exit_even[1]));
+  (* keep *) sg13g2_a22oi_1  mux_comb1_even(.Y(doe2), .A1(Latch_even[0]), .A2(exit_even[2]), .B1(Latch_even[1]), .B2(exit_even[3]));
+  (* keep *) sg13g2_nand2_1  mux_nand2_even(.Y(Dout_even), .A(doe1), .B(doe2));
+
+  (* keep *) sg13g2_a22oi_1  mux_comb0_odd( .Y(doo1),  .A1(Latch_odd[2]), .A2(exit_odd[0]),  .B1(Latch_odd[3]), .B2(exit_odd[1]));
+  (* keep *) sg13g2_a22oi_1  mux_comb1_odd( .Y(doo2),  .A1(Latch_odd[0]), .A2(exit_odd[2]),  .B1(Latch_odd[1]), .B2(exit_odd[3]));
+  (* keep *) sg13g2_nand2_1  mux_nand2_odd( .Y(Dout_odd),  .A(doo1), .B(doo2));
 
 // Sélection de sortie
   (* keep *) sg13g2_sdfrbpq_1 sync_Dout(.Q(Dout), .D(Dout_odd), .SCD(Dout_even), .SCE(Even_odd), .RESET_B(RESET), .CLK(CLK));
