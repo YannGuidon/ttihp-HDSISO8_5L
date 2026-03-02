@@ -21,7 +21,7 @@ Compared to a shift register with normal DFF cells, it could store twice the sam
 Ideally, manual placement of the 8 chains should be manual/tooled, not thrown at random. For implementation, I use a "tuned" Verilog workflow and instantiate cells directly from
 https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v . For simulation, parts of this file are copy-pasted to gate-specific files to remove some warnings (find them in /test).
 
-You will get a "Synthesis warnings : Warning: There are 32 unclocked register/latch pins." This is normal.
+You will get a "Synthesis warnings : Warning: There are XXX unclocked register/latch pins." This is normal.
 
 ## How to test
 
