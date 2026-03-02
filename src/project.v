@@ -113,7 +113,7 @@ module tt_um_ygdes_hdsiso8_dlhq (
 
   wire [3:0] siso_even, siso_odd;
 
-  siso_demux_mux_dl(
+  siso_demux_mux_dl demux_mux(
     .RESET(INT_RESET),
     .CLK(CLK_OUT),
     .Din(SISO_in),
