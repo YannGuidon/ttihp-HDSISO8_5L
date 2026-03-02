@@ -112,9 +112,23 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .Decoded8(Decoded8));
 
   wire [3:0] siso_start_even, siso_start_odd;
-  wire [3:0] latch4_even, latch4_odd;
-  wire [3:0] siso_end_even, siso_end_odd;
+//  wire [3:0] latch4_even, latch4_odd;
+//  wire [3:0] siso_end_even, siso_end_odd;
 
+  siso_demux_mux_dl demux_mux(
+    .RESET(INT_RESET),
+    .CLK(CLK_OUT),
+    .Din(SISO_in),
+    .Latch8(Decoded8),
+//    .Latch_even(latch4_even),
+//    .Latch_odd(latch4_odd),
+    .siso_first_even(siso_start_even),
+    .siso_first_odd(siso_start_odd),
+    .siso_last_even(siso_start_even),
+    .siso_last_odd(siso_start_odd),
+    .Dout(D_OUT));
+
+/*  
   siso_demux_mux_dl demux_mux(
     .RESET(INT_RESET),
     .CLK(CLK_OUT),
@@ -137,6 +151,9 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .siso_in(siso_start_odd),
     .siso_out(siso_end_odd),
     .latch(latch4_odd)); // not neg here.
+*/
+
+
 
     
 /*    
