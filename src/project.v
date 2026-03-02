@@ -122,7 +122,8 @@ module tt_um_ygdes_hdsiso8_dlhq (
        .SCD(SISO_in), .SCE(Decoded8[5]), .RESET_B(INT_RESET), .CLK(CLK_OUT));
 
   wire [3:0] siso_in4, siso_out4, latch4, latch4neg,
-          chain4_a, chain4_b, chain4_c, chain4_d, chain4_e ;
+    //      chain4_a, chain4_b, chain4_c, chain4_d,
+    chain4_e ;
   assign siso_in4[0] = back;
   assign siso_in4[1] = siso_out4[0];
   assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe,
