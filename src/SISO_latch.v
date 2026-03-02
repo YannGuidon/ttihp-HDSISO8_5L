@@ -85,7 +85,7 @@ module siso_demux_mux_dl(
     input  wire       RESET,
     input  wire       CLK,
     input  wire       Din,
-    input  wire       Latch8,
+    input  wire [7:0] Latch8,
     output wire [3:0] siso_first_even,
     output wire [3:0] siso_first_odd,
 
