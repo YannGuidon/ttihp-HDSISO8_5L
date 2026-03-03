@@ -75,20 +75,22 @@ async def test_project(dut):
           assert i == 193
         break
 
-    i = 0
-    while (True):  # one more time ?
-      #assert dut.uio_out.value != 0
-      await ClockCycles(dut.clk, 1)
-      i = i+1
-      if EnableAsserts:
-        assert i < 260
-      if dut.uo_out.value[6]:
-        dut._log.info("Period 2: " + str(i) + " = " + str(dut.uio_out.value))
+    for x in range(1, 3):
+      i = 0
+      while (True):  # one more time ?
+        #assert dut.uio_out.value != 0
+        await ClockCycles(dut.clk, 1)
+        i = i+1
         if EnableAsserts:
-          assert dut.uio_out.value == 255
-          assert i == 255
-        break
+          assert i < 260
+        if dut.uo_out.value[6]:
+          dut._log.info("Period 2: " + str(i) + " = " + str(dut.uio_out.value))
+          if EnableAsserts:
+            assert dut.uio_out.value == 255
+            assert i == 255
+          break
 
+  
     dut.ui_in.value = EXT_RST + SHOW_LFSR + DIN_SEL  # LFSR_EN off, stall the register feedback
     await ClockCycles(dut.clk, 10)
     if EnableAsserts:
@@ -118,6 +120,6 @@ async def test_project(dut):
     dut.ui_in.value =  LFSR_EN + SHOW_LFSR + DIN_SEL
     await ClockCycles(dut.clk, 2)
     dut.ui_in.value =  LFSR_EN + SHOW_LFSR + DIN_SEL + EXT_RST
-    await ClockCycles(dut.clk, 10000) # let it run for a while to see the LFSR output from the SIO
+    await ClockCycles(dut.clk, 1000) # let it run for a while to see the LFSR output from the SIO
 
     dut._log.info(" Johnson8 OK !")
