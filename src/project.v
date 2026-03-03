@@ -111,24 +111,26 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .DFF4(Johnson4),
     .Decoded8(Decoded8));
 
+/* version : direct loopback, 20 cycles
   wire [3:0] siso_start_even, siso_start_odd;
-//  wire [3:0] latch4_even, latch4_odd;
-//  wire [3:0] siso_end_even, siso_end_odd;
 
   siso_demux_mux_dl demux_mux(
     .RESET(INT_RESET),
     .CLK(CLK_OUT),
     .Din(SISO_in),
     .Latch8(Decoded8),
-//    .Latch_even(latch4_even),
-//    .Latch_odd(latch4_odd),
     .siso_first_even(siso_start_even),
     .siso_first_odd(siso_start_odd),
     .siso_last_even(siso_start_even),
     .siso_last_odd(siso_start_odd),
     .Dout(D_OUT));
+*/
 
-/*  
+/* longer version, 96+20=116 cycles */
+  wire [3:0] siso_start_even, siso_start_odd;
+  wire [3:0] latch4_even, latch4_odd;
+  wire [3:0] siso_end_even, siso_end_odd;
+
   siso_demux_mux_dl demux_mux(
     .RESET(INT_RESET),
     .CLK(CLK_OUT),
@@ -151,42 +153,6 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .siso_in(siso_start_odd),
     .siso_out(siso_end_odd),
     .latch(latch4_odd)); // not neg here.
-*/
-
-
-
-    
-/*    
-  wire [3:0] siso_in4, siso_out4, latch4, latch4neg,
-    chain4_e ;
-  assign siso_in4[0] = back;
-  assign siso_in4[1] = siso_out4[0];
-  assign siso_in4[2] = siso_out4[1];  // au diable la syntaxe,
-  assign siso_in4[3] = siso_out4[2];  // mate le formatage
-  assign D_OUT       = siso_out4[3];
-  assign latch4 = {
-    Decoded8[0], // the first latch's data is locked during the transition from [0] to [1]
-    Decoded8[2],
-    Decoded8[4], // Input is sampled by sync8 at [5] so setup&hold should be comfortable.
-    Decoded8[6]
-  };
-  Inverters_x4 BoostLatch(.Y(latch4neg), .A(latch4));
-
-//  siso_tranche4x4x4_dl_pos siso64_2(
-//    .siso_in(chain4_c),
-//    .siso_out(chain4_d),
-    //    .latch(latch4)); // not neg here.
-
-  siso_tranche4x4_dl_neg siso16_1(
-    .siso_in(siso_in4),
-    .siso_out(chain4_e),
-    .latch(latch4neg));  // NEG here
-
-  siso_tranche4x4_dl_neg siso16_2(
-    .siso_in(chain4_e),
-    .siso_out(siso_out4),
-    .latch(latch4neg));  // NEG here too
-*/
 
 ////////////////////////////// All the dummies go here //////////////////////////////
 
