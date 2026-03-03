@@ -126,7 +126,8 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .Dout(D_OUT));
 */
 
-/* longer version, 384+96+22=502 cycles, about 9 cycles in "advance" of the LFSR period */
+/* longer version, 384+96+22=502 cycles,
+    about 9 cycles in "advance" of the LFSR period pulse */
   wire [3:0] siso_start_even, siso_start_odd;
   wire [3:0] siso_chain_even, siso_chain_odd;
   wire [3:0] latch4_even, latch4_odd;
