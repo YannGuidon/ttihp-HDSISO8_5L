@@ -144,12 +144,12 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .siso_last_odd(siso_end_odd),
     .Dout(D_OUT));
 
-// plugging 64*2 latches:
-  siso_tranche4x4x4_dl_pos siso64_1(
+// plugging 256*2 latches:
+  siso_tranche4x4x4x4_dl_pos siso256_1(
     .siso_in(siso_start_even),
     .siso_out(siso_end_even),
     .latch(latch4_even)); // not neg here.
-  siso_tranche4x4x4_dl_pos siso64_2(
+  siso_tranche4x4x4x4_dl_pos siso256_2(
     .siso_in(siso_start_odd),
     .siso_out(siso_end_odd),
     .latch(latch4_odd)); // not neg here.
