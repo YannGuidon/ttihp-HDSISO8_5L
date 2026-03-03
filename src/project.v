@@ -126,8 +126,9 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .Dout(D_OUT));
 */
 
-/* longer version, 96+20=116 cycles */
+/* longer version, 384+96+22=502 cycles, about 9 cycles in "advance" of the LFSR period */
   wire [3:0] siso_start_even, siso_start_odd;
+  wire [3:0] siso_chain_even, siso_chain_odd;
   wire [3:0] latch4_even, latch4_odd;
   wire [3:0] siso_end_even, siso_end_odd;
 
@@ -144,13 +145,23 @@ module tt_um_ygdes_hdsiso8_dlhq (
     .siso_last_odd(siso_end_odd),
     .Dout(D_OUT));
 
-// plugging 256*2 latches:
+// plugging 256*2 latches, or 384 bits
   siso_tranche4x4x4x4_dl_pos siso256_1(
     .siso_in(siso_start_even),
-    .siso_out(siso_end_even),
+    .siso_out(siso_chain_even),
     .latch(latch4_even)); // not neg here.
   siso_tranche4x4x4x4_dl_pos siso256_2(
     .siso_in(siso_start_odd),
+    .siso_out(siso_chain_odd),
+    .latch(latch4_odd)); // not neg here.
+
+// plugging 64*2 latches, or 96 bits
+  siso_tranche4x4x4_dl_pos siso64_1(
+    .siso_in(siso_chain_even),
+    .siso_out(siso_end_even),
+    .latch(latch4_even)); // not neg here.
+  siso_tranche4x4x4_dl_pos siso64_2(
+    .siso_in(siso_chain_odd),
     .siso_out(siso_end_odd),
     .latch(latch4_odd)); // not neg here.
 
