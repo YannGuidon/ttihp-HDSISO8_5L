@@ -144,7 +144,7 @@ module siso_demux_mux_dl(
 */
 
   assign exit_even = {te3[3], siso_last_even[0], te1[1], te2[2]};
-  assign exit_odd  = {to3[3], siso_last_odd [0], to1[1]} to2[2]};
+  assign exit_odd  = {to3[3], siso_last_odd [0], to1[1], to2[2]};
 
   (* keep *) sg13g2_a22oi_1  mux_comb0_even(.Y(doe1), .A1(Latch_even[0]), .A2(exit_even[0]), .B1(Latch_even[1]), .B2(exit_even[1]));
   (* keep *) sg13g2_a22oi_1  mux_comb1_even(.Y(doe2), .A1(Latch_even[2]), .A2(exit_even[2]), .B1(Latch_even[3]), .B2(exit_even[3]));
