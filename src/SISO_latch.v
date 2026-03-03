@@ -137,18 +137,19 @@ module siso_demux_mux_dl(
 
 // Re-multiplexing
 
-/* version nominale - Sample&Hold maximal, 20 cycles
+/* version nominale - Sample&Hold maximal, 20 cycles */
   assign exit_even = {te2[2], te3[3], siso_last_even[0], te1[1]}; // This works more or less like a perm matrix
   assign exit_odd  = {to2[2], to3[3], siso_last_odd [0], to1[1]}; // It could get merged below but it might allow
   //  Latch_even[x]     3       2           1              0           some customisation maybe later.
-*/
+
 /* version 24 cycles
   assign exit_even = {te3[3], siso_last_even[0], te1[1], te2[2]};
   assign exit_odd  = {to3[3], siso_last_odd [0], to1[1], to2[2]};
-*/
+
+  20 cycles ? lower S&H
   assign exit_even = {te1[1], te2[2], te3[3], siso_last_even[0]};
   assign exit_odd  = {to1[1], to2[2], to3[3], siso_last_odd [0]};
-
+*/
   (* keep *) sg13g2_a22oi_1  mux_comb0_even(.Y(doe1), .A1(Latch_even[0]), .A2(exit_even[0]), .B1(Latch_even[1]), .B2(exit_even[1]));
   (* keep *) sg13g2_a22oi_1  mux_comb1_even(.Y(doe2), .A1(Latch_even[2]), .A2(exit_even[2]), .B1(Latch_even[3]), .B2(exit_even[3]));
   (* keep *) sg13g2_nand2_1  mux_nand2_even(.Y(Dout_even), .A(doe1), .B(doe2));
