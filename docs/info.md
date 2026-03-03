@@ -1,6 +1,6 @@
 ## What it is
 
-This tile delays a bit's value by 502 cycles at speeds near 100MHz (according to the synthesiser, to be tested). It is a baseline for storage packing density, as well as a test architecture for asynchronous shift registers, not made out of large DFF cells. This version packs 672 latches and a controller, filling 87% of the tile's surface.
+This tile delays a bit's value by 502 cycles at speeds above 100MHz (according to the synthesiser, to be tested). It is a baseline for storage packing density, as well as a test architecture for asynchronous shift registers, not made out of large DFF cells. This version packs 672 standard latches and a controller, filling 87% of the tile's surface.
 
 ## How it works
 
@@ -15,6 +15,8 @@ https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_st
 MUX2 is almost 3× smaller than the DFF gate and could be used as a latch by feeding its output back to an input (just like with the old antifuse Actel FPGAs such as A1xxx). This trick is rejected by the tools but in the same area, I could also implement a SR latch with enable, using combined and compact OR/AND gates. This is done in a different tile but first I need a reliable reference point.
 
 This project "tt_um_ygdes_hdsiso8_dlhq" uses the conventional transparent latch DLHQ, whose size is in-between. The shift register uses 4 latches to store 3 bits at a given time and 4 non-overlapping "clock" pulses perform the shifting. Slowly. Just like below, but with 8 parallel chains.
+
+"Tranches" are provided with 16, 64 or 256 latches and must be used in "odd-even" pairs so you get 24, 96 or 384 cycles of delay. You can chain them as long as surface allows (to a degree). The controller adds another 20 cycles. The 16x tranches need 4 extra inverters if used alone.
 
 ![](ShiftRegister_latches.png)
 
