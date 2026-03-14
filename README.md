@@ -5,13 +5,13 @@
 
 # Tiny Tapeout Project: HDSISO8
 
-This is a prototype of a shift register that explores how to store data more densely than classic DFFs could, using the specific IHP CMOS PDK. This baseline version uses sg13g2_dlhq_1, another project implements the exact same logic using a smaller pair of sg13g2_a21oi_1/sg13g2_o21ai_1 for comparison.
+This is a prototype of a shift register that explores how to store data more densely than classic DFFs could, using the specific IHP CMOS PDK. This baseline version uses sg13g2_dlhq_1, another project https://github.com/ygdes/ttihp-HDSISO8RS implements the exact same logic using a 30% smaller pair of sg13g2_a21oi_1/sg13g2_o21ai_1 for comparison.
 
 Relevant stats: this one tile holds 672× DLHQ latches, offering a delay of 502 cycles at 87% surface fill with working speed expected to exceed 100MHz.
 
-SISO means Serial-In, Serial-Out, so it's not RAM since access is not random, but this non-randomness allows some clever tricks that optimise size, speed and power (static & dynamic) by eliminating the single general clock network. This implementation expects half the clock frequency and 4× clock load per cycle, for an effective 8× power reduction.
+SISO means Serial-In, Serial-Out, so it's not RAM since access is not random, but this non-randomness allows some clever tricks that optimise size, speed and power (static & dynamic) by eliminating the single general clock network. This implementation expects half the clock frequency and 1/4th clock load per cycle, for an effective 8× power reduction.
 
-A complex synchronous-to-asynchronous-to-synchronous interface is needed to operate glitch-free, and apart from the small controller's overhead, this allows almost arbitrary depth at ~1.5 to 2× the density of DFF. Expect P&R mayhem though because I can't do the manual layout.
+A complex synchronous-to-asynchronous-to-synchronous interface is needed to operate glitch-free, and apart from the small controller's overhead, this allows almost arbitrary depth at ~1.5 to 2× the density of DFF. Expect P&R mayhem though because I can't do the manual layout. Yet. Actually it's messy.
 
 The scalability comes from modularity: one IO block controls as many tranches as you like, which can be chained. Tranches come in sizes of 16, 64, 256 cells, each holding 12, 48 and 192 effective data bits. Here, 502 bits of depth are made with 672 latches, 32 latches in the controller add 20 cycles and the rest is 2×(256+64) in chainable tranches.
 
