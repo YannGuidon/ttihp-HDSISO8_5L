@@ -12,7 +12,7 @@ https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.ref/sg13g2_st
 * Area of sg13g2_mux2_1   : 18.14400
 * Area of sg13g2_a21oi_1  : (×2) = 18.14400 (same as sg13g2_o21ai_1)
 
-MUX2 is almost 3× smaller than the DFF gate and could be used as a latch by feeding its output back to an input (just like with the old antifuse Actel FPGAs such as A1xxx). This trick is rejected by the tools but in the same area, I could also implement a SR latch with enable, using combined and compact OR/AND gates. This is done in a different tile but first I need a reliable reference point.
+MUX2 is almost 3× smaller than the DFF gate and could be used as a latch by feeding its output back to an input (just like with the old antifuse Actel FPGAs such as A1xxx). This trick is rejected by the tools but in the same area, I could also implement a SR latch with enable, using combined and compact OR/AND gates. This is done in a different tile (see https://github.com/ygdes/ttihp-HDSISO8RS ) but first I need a reliable reference point.
 
 This project "tt_um_ygdes_hdsiso8_dlhq" uses the conventional transparent latch DLHQ, whose size is in-between. The shift register uses 4 latches to store 3 bits at a given time and 4 non-overlapping "clock" pulses perform the shifting. Slowly. Just like below, but with 8 parallel chains.
 
