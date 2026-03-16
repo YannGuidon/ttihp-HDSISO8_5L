@@ -5,9 +5,9 @@
 
 # Tiny Tapeout Project: HDSISO8
 
-This is a prototype of a shift register that explores how to store data more densely than classic DFFs could, using the specific IHP CMOS PDK. This baseline version uses sg13g2_dlhq_1, another project https://github.com/ygdes/ttihp-HDSISO8RS implements the exact same logic using a 30% smaller pair of sg13g2_a21oi_1/sg13g2_o21ai_1 for comparison.
+This is a prototype of a shift register that explores how to store data more densely than classic DFFs could, using the Open Sourced IHP CMOS PDK. This baseline version is based on the cell sg13g2_dlhq_1, another project https://github.com/ygdes/ttihp-HDSISO8RS implements the exact same logic using a 30% smaller pair of sg13g2_a21oi_1 (or sg13g2_o21ai_1) for comparison.
 
-Relevant stats: this one tile holds 672× DLHQ latches, offering a delay of 502 cycles at 87% surface fill with working speed expected to exceed 100MHz.
+Relevant stats: this one tile holds 672× DLHQ latches, offering a delay of 502 cycles at 86.6% surface fill with working speed expected to exceed 100MHz.
 
 SISO means Serial-In, Serial-Out, so it's not RAM since access is not random, but this non-randomness allows some clever tricks that optimise size, speed and power (static & dynamic) by eliminating the single general clock network. This implementation expects half the clock frequency and 1/4th clock load per cycle, for an effective 8× power reduction.
 
