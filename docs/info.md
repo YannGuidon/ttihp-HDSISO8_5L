@@ -51,6 +51,8 @@ Extra insight and observability:
 
 ![](Johnson8.png)
 
+(Diagram must be updated: RESET forces all the outputs to 1)
+
 ## Bonus: LFSR
 
 An 8-bit LFSR is integrated to ease testing. Thus an oscilloscope and a variable frequency oscillator are enough to characterise the achieveable speed. To use it,
@@ -69,7 +71,7 @@ Note 1: 8 bits gives a period of 255, almost half of the SISO's depth of 502, a 
 
 Note 2: The LFSR_PERIOD pulse should appear 193 clock cycles after the release of the RESET pin.
 
-Note 3: The RESET signal does not clear the contents of the SISO. Don't forget to flush its contents before use, by waiting for 502 cycles after releasing the RESET.
+Note 3: The RESET signal clears the contents of the SISO. Give it a few cycles for the 0 to propagate through all the latches while it flushes after releasing the RESET.
 
 ![](TT_interface_LFSR8.png)
 
