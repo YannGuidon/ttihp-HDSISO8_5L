@@ -1,0 +1,10 @@
+`timescale 1ns/10ps
+`celldefine
+module sg13cmos5l_nor4_2 (Y, A, B, C, D);
+	output Y;
+	input A, B, C, D;
+	wire int_fwire_0;
+	or (int_fwire_0, A, B, C, D);
+	not (Y, int_fwire_0);
+endmodule
+`endcelldefine
