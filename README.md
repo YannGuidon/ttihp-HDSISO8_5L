@@ -1,7 +1,7 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
 - [Read the documentation for this project](docs/info.md)
-- [This project is submitted to the Tiny Tapeout iHP26a run in March 2026](https://app.tinytapeout.com/projects/3747).
+- This project is a port (from SG13G2 to SG13CMOS5L) of [https://github.com/ygdes/ttihp-HDSISO8](https://github.com/ygdes/ttihp-HDSISO8) that is part of the [Tiny Tapeout iHP26a run in March 2026](https://app.tinytapeout.com/projects/3747). Roughly: replace all sg13g2_ prefixes with sg13cmos5l_ in the source code (plus several config changes)
 
 # Tiny Tapeout Project: HDSISO8
 
