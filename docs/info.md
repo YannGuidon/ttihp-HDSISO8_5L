@@ -1,6 +1,6 @@
 ## What it is
 
-This tile delays a bit's value by 502 cycles at speeds above 100MHz (according to the synthesiser, to be tested). It is a baseline for storage packing density, as well as a test architecture for asynchronous shift registers, not made out of large DFF cells. This version packs 672 standard latches and a controller, filling 87% of the tile's surface.
+This tile delays a bit's value by 502 cycles at speeds above 100MHz (according to the synthesiser, to be tested). It is a baseline for storage packing density, as well as a test architecture for asynchronous shift registers, not made out of large DFF cells. This version packs 672 standard latches and a controller, filling 87% of the tile's surface. This version is a port to the experimental IHP SG13CMOS5L PDK.
 
 ## How it works
 
